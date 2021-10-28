@@ -28,20 +28,9 @@ function App() {
 
   return (
     <div className="App">
-      {usuario ? <Home /> : <Login setUsuario={setUsuario} />};
-      {/* <Route exact path="/" component={Login} />
-      <Route exact path="/register" component={Register} />
-      <Route exact path="/home" component={Home} /> */}
+      {usuario ? <Home /> : <Login setUsuario={setUsuario} />}
     </div>
   );
 }
 
 export default App;
-
-// const obtenerDatos = async () => {
-//   const datos = await getDocs(collection(db, "users"));
-//   //console.log(datos.docs[0].data());
-//   datos.forEach((documento) => {
-//     console.log(documento.data());
-//   });
-// };

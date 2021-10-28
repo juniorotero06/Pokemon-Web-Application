@@ -1,26 +1,12 @@
 import React, { useState } from "react";
 import logo from "../logo.svg";
-import { auth } from "../firebase/firebaseConfig";
+import { db, auth } from "../firebase/firebaseConfig";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-
-export function validate(input) {
-  let errors = {};
-  if (!input.username) {
-    errors.username = "Username is required";
-  } else if (!/\S+@\S+\.\S+/.test(input.username)) {
-    errors.username = "Username is invalid";
-  }
-  if (!input.password) {
-    errors.password = "Password is required";
-  } else if (!/(?=.*[0-9])/.test(input.password)) {
-    errors.password = "Password is invalid";
-  }
-
-  return errors;
-}
+import { doc, setDoc } from "firebase/firestore";
+import { validate } from "./validate";
 
 export default function Login(props) {
   const [isRegister, setIsRegister] = useState(false);
@@ -43,11 +29,15 @@ export default function Login(props) {
 
   const crearUsuario = (user, password) => {
     createUserWithEmailAndPassword(auth, user, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("usuario creado: ", user);
+        console.log("usuario creado: ", userCredential);
         props.setUsuario(user);
+        //crear base de datos
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+        });
       })
       .catch((error) => {
         const errorCode = error.code;
