@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import logo from "../logo.svg";
 import { validate } from "./validate";
+import { db, auth } from "../firebase/firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
-function saludo() {
-  alert("Hola manco");
-}
-
-export default function Register() {
+export default function Register(props) {
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -24,6 +23,35 @@ export default function Register() {
     });
   };
 
+  const crearUsuario = (user, password) => {
+    createUserWithEmailAndPassword(auth, user, password)
+      .then(async (userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log("usuario creado: ", userCredential);
+        //crear base de datos
+        await setDoc(doc(db, "users", user.uid), {
+          email: user.email,
+        });
+      })
+      .then((userCredential) => {
+        props.setUsuario(userCredential.user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    const user = e.target.idUsername.value;
+    const password = e.target.idPassword.value;
+    console.log(user, password);
+    crearUsuario(user, password);
+  };
+
   return (
     <div>
       <header className="App-header">
@@ -31,32 +59,32 @@ export default function Register() {
         <div>
           <p>Registro</p>
         </div>
-        <form>
+        <form onSubmit={submitHandler}>
           <div>
             <label>Username: </label>
             <input
-              className={error.username && "danger"}
+              className={error.username}
               type="text"
               name="username"
+              id="idUsername"
               onChange={handleInputChange}
               value={input.username}
             />
-            {error.username && <h6 className="danger">{error.username}</h6>}
+            {error.username && <h6>{error.username}</h6>}
           </div>
           <div>
             <label>Password: </label>
             <input
-              className={error.password && "danger"}
+              className={error.password}
               type="text"
               name="password"
+              id="idPassword"
               onChange={handleInputChange}
               value={input.password}
             />
-            {error.password && <h6 className="danger">{error.password}</h6>}
+            {error.password && <h6>{error.password}</h6>}
           </div>
-          <button type="button" onClick={saludo}>
-            Registrarse
-          </button>
+          <input type="submit" value="Registrar" />
         </form>
       </header>
     </div>

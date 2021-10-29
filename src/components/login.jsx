@@ -1,15 +1,11 @@
 import React, { useState } from "react";
 import logo from "../logo.svg";
-import { db, auth } from "../firebase/firebaseConfig";
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-} from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { auth } from "../firebase/firebaseConfig";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { validate } from "./validate";
+import { Link } from "react-router-dom";
 
 export default function Login(props) {
-  const [isRegister, setIsRegister] = useState(false);
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -27,24 +23,6 @@ export default function Login(props) {
     });
   };
 
-  const crearUsuario = (user, password) => {
-    createUserWithEmailAndPassword(auth, user, password)
-      .then(async (userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log("usuario creado: ", userCredential);
-        props.setUsuario(user);
-        //crear base de datos
-        await setDoc(doc(db, "users", user.uid), {
-          email: user.email,
-        });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
-  };
   const iniciarSesion = (user, password) => {
     signInWithEmailAndPassword(auth, user, password)
       .then((userCredential) => {
@@ -63,13 +41,7 @@ export default function Login(props) {
     const user = e.target.idUsername.value;
     const password = e.target.idPassword.value;
     console.log(user, password);
-
-    if (isRegister) {
-      crearUsuario(user, password);
-    }
-    if (!isRegister) {
-      iniciarSesion(user, password);
-    }
+    iniciarSesion(user, password);
   };
 
   return (
@@ -77,44 +49,41 @@ export default function Login(props) {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <div>
-          <p>{isRegister ? "Registro" : "Iniciar Sesion"}</p>
+          <p>Iniciar Sesión</p>
         </div>
         <form onSubmit={submitHandler}>
           <div>
             <label>Username: </label>
             <input
-              className={error.username && "danger"}
+              className={error.username}
               type="text"
               name="username"
               id="idUsername"
               onChange={handleInputChange}
               value={input.username}
             />
-            {error.username && <h6 className="danger">{error.username}</h6>}
+            {error.username && <h6>{error.username}</h6>}
           </div>
           <div>
             <label>Password: </label>
             <input
-              className={error.password && "danger"}
+              className={error.password}
               type="text"
               name="password"
               id="idPassword"
               onChange={handleInputChange}
               value={input.password}
             />
-            {error.password && <h6 className="danger">{error.password}</h6>}
+            {error.password && <h6>{error.password}</h6>}
           </div>
-          <input
-            type="submit"
-            value={isRegister ? "Registrarse" : "Ingresar"}
-          />
+          {/* <Link to="/home"> */}
+          <input type="submit" value="Ingresar" />
+          {/* </Link> */}
         </form>
         <div>
-          <h6 onClick={() => setIsRegister(!isRegister)}>
-            {isRegister
-              ? "¿Ya tienes cuenta? Inicia Sesion"
-              : "¿No tienes Cuenta? ¡Registrate!"}
-          </h6>
+          <Link to="/register">
+            <h6>"¿No tienes Cuenta? ¡Registrate!"</h6>
+          </Link>
         </div>
       </header>
     </div>

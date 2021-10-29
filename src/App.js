@@ -1,10 +1,12 @@
 import "./App.css";
 import React, { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db, auth } from "./firebase/firebaseConfig";
 import Login from "./components/login.jsx";
 import Home from "./components/home";
+import Register from "./components/register";
+import { collection, getDocs } from "firebase/firestore";
+import { db, auth } from "./firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import { Route } from "react-router";
 
 function App() {
   const [usuario, setUsuario] = useState(null);
@@ -28,7 +30,19 @@ function App() {
 
   return (
     <div className="App">
-      {usuario ? <Home /> : <Login setUsuario={setUsuario} />}
+      <Route
+        exact
+        path="/"
+        render={() => (usuario ? <Home /> : <Login setUsuario={setUsuario} />)}
+      />
+      <Route
+        exact
+        path="/register"
+        render={() =>
+          usuario ? <Home /> : <Register setUsuario={setUsuario} />
+        }
+      />
+      <Route exact path="/home" component={Home} />
     </div>
   );
 }
