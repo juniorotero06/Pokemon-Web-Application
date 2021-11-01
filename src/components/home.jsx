@@ -26,10 +26,8 @@ export default function Home() {
             img: response.data.sprites.front_default,
             types: response.data.types,
           };
-          //console.log(poke);
           setPokemons(poke);
         }
-        console.log(pokemons);
       })
       .catch((error) => {
         if (error.response.status === 404) {
@@ -51,9 +49,6 @@ export default function Home() {
         <SearchBar onSearch={onSearch} />
       </div>
       <div>
-        {/* {pokemons.map((pokemon) => (
-          <h1 key={pokemon.id}>{pokemon.name}</h1>
-        ))} */}
         {pokemons ? (
           <CardSearch
             key={pokemons.id}
@@ -63,6 +58,9 @@ export default function Home() {
             id={pokemons.id}
           />
         ) : null}
+      </div>
+      <div>
+        <Cards />
       </div>
     </div>
   );

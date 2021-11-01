@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Login from "./components/login.jsx";
 import Home from "./components/home";
 import Register from "./components/register";
-import axios from "axios";
 import { collection, getDocs } from "firebase/firestore";
 import { db, auth } from "./firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";

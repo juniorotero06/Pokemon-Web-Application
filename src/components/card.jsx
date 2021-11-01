@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function CardSearch({ name, types, id, img }) {
+export default function Card({ name, types, id, img }) {
   return (
     <div>
       <div>

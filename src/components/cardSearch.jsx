@@ -1,6 +1,19 @@
 import React from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db, auth } from "../firebase/firebaseConfig";
+import { onAuthStateChanged } from "firebase/auth";
 
 export default function CardSearch({ name, types, id, img }) {
+  const createTeamCollection = () => {
+    onAuthStateChanged(auth, async (userFirebase) => {
+      await addDoc(collection(db, "users", userFirebase.uid, "team"), {
+        name: name,
+        id: id,
+        img: img,
+        types: types,
+      });
+    });
+  };
   return (
     <div>
       <div>
@@ -17,7 +30,7 @@ export default function CardSearch({ name, types, id, img }) {
           </div>
         </div>
       </div>
-      <button>Agregar al equipo</button>
+      <button onClick={createTeamCollection}>Agregar al equipo</button>
     </div>
   );
 }

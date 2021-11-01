@@ -34,6 +34,7 @@ export default function Login(props) {
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        alert(errorCode, errorMessage);
       });
   };
   const submitHandler = (e) => {
@@ -76,9 +77,7 @@ export default function Login(props) {
             />
             {error.password && <h6>{error.password}</h6>}
           </div>
-          {/* <Link to="/home"> */}
           <input type="submit" value="Ingresar" />
-          {/* </Link> */}
         </form>
         <div>
           <Link to="/register">
