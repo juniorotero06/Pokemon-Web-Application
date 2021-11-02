@@ -1,10 +1,12 @@
-import { signOut } from "@firebase/auth";
-import React from "react";
-import { auth } from "../firebase/firebaseConfig";
+import { signOut } from "firebase/auth";
+import React, { useState, useEffect } from "react";
+import { db, auth } from "../firebase/firebaseConfig";
 import Cards from "./cards";
 import SearchBar from "./searchBar";
 import axios from "axios";
 import CardSearch from "./cardSearch";
+import { collection, getDocs } from "firebase/firestore";
+import { onAuthStateChanged } from "@firebase/auth";
 
 export default function Home() {
   const [pokemons, setPokemons] = React.useState(null);
@@ -17,8 +19,6 @@ export default function Home() {
     await axios
       .get(`https://pokeapi.co/api/v2/pokemon/${pokemon}`)
       .then((response) => {
-        console.log(response.data);
-        console.log(response.data.name);
         if (response.data !== undefined) {
           const poke = {
             name: response.data.name,
@@ -39,6 +39,30 @@ export default function Home() {
       });
   }
 
+  const [teams, setTeams] = useState([]);
+  let pokms = [];
+
+  async function getTeams() {
+    onAuthStateChanged(auth, async (userFirebase) => {
+      if (userFirebase) {
+        const datosTeam = await getDocs(
+          collection(db, "users", userFirebase.uid, "team")
+        );
+        //console.log("DatosTeam:", datosTeam.docs[1].data());
+        for (let team of datosTeam.docs) {
+          pokms.push(team.data());
+        }
+        setTeams(...teams, pokms);
+      }
+    });
+    console.log("se ejecuto la funcion marrano");
+    console.log(pokms);
+  }
+
+  useEffect(() => {
+    getTeams();
+  }, []);
+
   return (
     <div>
       <div>
@@ -56,12 +80,11 @@ export default function Home() {
             types={pokemons.types}
             img={pokemons.img}
             id={pokemons.id}
+            getTeams={getTeams}
           />
         ) : null}
       </div>
-      <div>
-        <Cards />
-      </div>
+      <div>{teams ? <Cards teams={teams} /> : null}</div>
     </div>
   );
 }

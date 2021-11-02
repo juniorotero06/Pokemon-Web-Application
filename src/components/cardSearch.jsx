@@ -3,7 +3,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { db, auth } from "../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
-export default function CardSearch({ name, types, id, img }) {
+export default function CardSearch({ name, types, id, img, getTeams }) {
   const createTeamCollection = () => {
     onAuthStateChanged(auth, async (userFirebase) => {
       await addDoc(collection(db, "users", userFirebase.uid, "team"), {
@@ -11,6 +11,8 @@ export default function CardSearch({ name, types, id, img }) {
         id: id,
         img: img,
         types: types,
+      }).then(() => {
+        getTeams();
       });
     });
   };
