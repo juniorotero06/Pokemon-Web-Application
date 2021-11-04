@@ -1,6 +1,16 @@
 import React from "react";
+import { db, auth } from "../firebase/firebaseConfig";
+import { doc, deleteDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "@firebase/auth";
 
-export default function Card({ name, types, id, img }) {
+export default function Card({ name, types, id, img, documentId }) {
+  const deletePokemon = async () => {
+    onAuthStateChanged(auth, async (userFirebase) => {
+      await deleteDoc(
+        doc(db, "users", userFirebase.uid, "team", documentId)
+      ).then();
+    });
+  };
   return (
     <div>
       <div>
@@ -17,7 +27,7 @@ export default function Card({ name, types, id, img }) {
           </div>
         </div>
       </div>
-      <button>Borrar del equipo</button>
+      <button onClick={deletePokemon}>Borrar del equipo</button>
     </div>
   );
 }

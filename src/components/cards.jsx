@@ -7,13 +7,14 @@ export default function Cards(props) {
     <div>
       <h1>Team:</h1>
       <div>
-        {props.teams.map((p) => (
+        {props.teams?.map((p) => (
           <Card
             key={p.id}
             name={p.name}
             types={p.types}
             img={p.img}
             id={p.id}
+            documentId={p.documentId}
           />
         ))}
       </div>

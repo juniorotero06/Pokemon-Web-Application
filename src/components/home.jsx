@@ -9,7 +9,9 @@ import { collection, getDocs } from "firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
 
 export default function Home() {
-  const [pokemons, setPokemons] = React.useState(null);
+  const [pokemons, setPokemons] = useState(null);
+  const [teams, setTeams] = useState([]);
+  let pokms = [];
 
   const cerrarSesion = () => {
     signOut(auth);
@@ -39,18 +41,23 @@ export default function Home() {
       });
   }
 
-  const [teams, setTeams] = useState([]);
-  let pokms = [];
-
   async function getTeams() {
     onAuthStateChanged(auth, async (userFirebase) => {
       if (userFirebase) {
         const datosTeam = await getDocs(
           collection(db, "users", userFirebase.uid, "team")
         );
-        //console.log("DatosTeam:", datosTeam.docs[1].data());
+        //console.log("DatosTeam:", datosTeam.docs.length);
         for (let team of datosTeam.docs) {
-          pokms.push(team.data());
+          let documentWithId = team.data();
+          documentWithId = Object.assign(
+            {
+              documentId: team.id,
+            },
+            documentWithId
+          );
+          //console.log("documentWithId: ", documentWithId);
+          pokms.push(documentWithId);
         }
         setTeams(...teams, pokms);
       }

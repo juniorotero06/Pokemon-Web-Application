@@ -11,8 +11,6 @@ export default function CardSearch({ name, types, id, img, getTeams }) {
         id: id,
         img: img,
         types: types,
-      }).then(() => {
-        getTeams();
       });
     });
   };
