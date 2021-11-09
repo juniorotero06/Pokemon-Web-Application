@@ -1,12 +1,10 @@
 import axios from "axios";
-import { db, auth } from "../firebase/firebaseConfig";
+import { db, auth } from "../../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
 
 const ON_SEARCH = "ON_SEARCH";
 const GET_TEAMS = "GET_TEAMS";
-const CREATE_TEAM_COLLECTION = "CREATE_TEAM_COLLECTION";
-const DELETE_POKEMON = "DELETE_POKEMON";
 
 //Actions creators
 //-OnSearch
@@ -26,29 +24,29 @@ export function onSearch(payload) {
   };
 }
 //-getTeams
-export async function getTeams() {
+export function getTeams() {
   return async function (dispatch) {
     return onAuthStateChanged(auth, async (userFirebase) => {
+      let pokms = [];
       if (userFirebase) {
         const datosTeam = await getDocs(
           collection(db, "users", userFirebase.uid, "team")
         );
-        dispatch({ type: GET_TEAMS, payload: datosTeam.docs });
+        for (let team of datosTeam.docs) {
+          let documentWithId = team.data();
+          documentWithId = Object.assign(
+            {
+              documentId: team.id,
+            },
+            documentWithId
+          );
+          //console.log("documentWithId: ", documentWithId);
+          pokms.push(documentWithId);
+        }
+        dispatch({ type: GET_TEAMS, payload: pokms });
       }
     });
   };
 }
-//-createTeamCollection
-export function createTeamCollection() {
-  return {
-    type: CREATE_TEAM_COLLECTION,
-  };
-}
-//-deletePokemon
-export function deletePokemon() {
-  return {
-    type: DELETE_POKEMON,
-  };
-}
 
-export { ON_SEARCH, GET_TEAMS, CREATE_TEAM_COLLECTION, DELETE_POKEMON };
+export { ON_SEARCH, GET_TEAMS };

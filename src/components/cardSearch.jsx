@@ -1,36 +1,34 @@
 import React from "react";
-import { collection, addDoc } from "firebase/firestore";
-import { db, auth } from "../firebase/firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
+import { connect } from "react-redux";
 
-export default function CardSearch({ name, types, id, img, getTeams }) {
-  const createTeamCollection = () => {
-    onAuthStateChanged(auth, async (userFirebase) => {
-      await addDoc(collection(db, "users", userFirebase.uid, "team"), {
-        name: name,
-        id: id,
-        img: img,
-        types: types,
-      });
-    });
-  };
+export function CardSearch(props) {
   return (
     <div>
       <div>
-        <h5>Name: {name}</h5>
+        <h5>Name: {props.pokemon?.name}</h5>
         <div>
           <div>
-            <p>Types: {types.map((type) => type.type.name + " ")}</p>
+            <p>
+              Types: {props.pokemon?.types.map((type) => type.type.name + " ")}
+            </p>
           </div>
           <div>
-            <p>Id: {id}</p>
+            <p>Id: {props.pokemon?.id}</p>
           </div>
           <div>
-            <img src={img} width="80" height="80" alt="" />
+            <img src={props.pokemon?.img} width="80" height="80" alt="" />
           </div>
         </div>
       </div>
-      <button onClick={createTeamCollection}>Agregar al equipo</button>
+      <button onClick={props.createTeamCollection}>Agregar al equipo</button>
     </div>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    pokemon: state.pokemonInfo,
+  };
+}
+
+export default connect(mapStateToProps)(CardSearch);

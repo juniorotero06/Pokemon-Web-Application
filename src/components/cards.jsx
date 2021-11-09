@@ -1,8 +1,9 @@
 import React from "react";
-
+import { getTeams } from "../redux/actions";
+import { connect } from "react-redux";
 import Card from "./card.jsx";
 
-export default function Cards(props) {
+export function Cards(props) {
   return (
     <div>
       <h1>Team:</h1>
@@ -21,3 +22,18 @@ export default function Cards(props) {
     </div>
   );
 }
+
+function mapStateToProps(state) {
+  return {
+    pokemon: state.pokemonInfo,
+    teams: state.pokemonTeam,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    getTeams: () => dispatch(getTeams()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cards);

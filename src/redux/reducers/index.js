@@ -1,14 +1,8 @@
-import {
-  ON_SEARCH,
-  GET_TEAMS,
-  CREATE_TEAM_COLLECTION,
-  DELETE_POKEMON,
-} from "../actions";
+import { ON_SEARCH, GET_TEAMS } from "../actions";
 
 const initialState = {
   pokemonInfo: null,
   pokemonTeam: [],
-  createTeam: {},
 };
 
 function rootReducer(state = initialState, action) {
@@ -24,10 +18,10 @@ function rootReducer(state = initialState, action) {
     };
   }
   if (action.type === GET_TEAMS) {
-  }
-  if (action.type === CREATE_TEAM_COLLECTION) {
-  }
-  if (action.type === DELETE_POKEMON) {
+    return {
+      ...state,
+      pokemonTeam: action.payload,
+    };
   }
   return state;
 }

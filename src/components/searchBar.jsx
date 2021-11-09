@@ -1,21 +1,33 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+import { onSearch } from "../redux/actions";
 
-export default function SearchBar({ onSearch }) {
+export function SearchBar(props) {
   const [pokemon, setPokemon] = useState("");
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        onSearch(pokemon);
-      }}
-    >
-      <input
-        type="text"
-        placeholder="Pokemon..."
-        value={pokemon}
-        onChange={(e) => setPokemon(e.target.value)}
-      />
-      <input type="submit" value="Buscar" />
-    </form>
+    <div className="searchbar">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          props.onSearch(pokemon);
+        }}
+      >
+        <input
+          type="text"
+          placeholder="Pokemon..."
+          value={pokemon}
+          onChange={(e) => setPokemon(e.target.value)}
+        />
+        <input type="submit" value="Buscar" />
+      </form>
+    </div>
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSearch: (pokemon) => dispatch(onSearch(pokemon)),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(SearchBar);
