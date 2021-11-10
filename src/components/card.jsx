@@ -2,14 +2,19 @@ import React from "react";
 import { db, auth } from "../firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
+import { deletePokemon } from "../redux/actions";
+import { connect } from "react-redux";
 
-export default function Card(props) {
+export function Card(props) {
   const deletePokemon = async () => {
     onAuthStateChanged(auth, async (userFirebase) => {
-      await deleteDoc(
-        doc(db, "users", userFirebase.uid, "team", props.documentId)
-      );
+      if (userFirebase) {
+        await deleteDoc(
+          doc(db, "users", userFirebase.uid, "team", props.documentId)
+        );
+      }
     });
+    props.deletePokemon(props.id);
   };
   return (
     <div>
@@ -31,3 +36,11 @@ export default function Card(props) {
     </div>
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    deletePokemon: (id) => dispatch(deletePokemon(id)),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Card);

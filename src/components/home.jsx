@@ -16,17 +16,23 @@ export function Home(props) {
 
   async function createTeamCollection() {
     onAuthStateChanged(auth, async (userFirebase) => {
-      await addDoc(collection(db, "users", userFirebase.uid, "team"), {
-        name: props.pokemon.name,
-        id: props.pokemon.id,
-        img: props.pokemon.img,
-        types: props.pokemon.types,
-      }).then(props.getTeams());
+      if (props.teams.length < 6) {
+        await addDoc(collection(db, "users", userFirebase.uid, "team"), {
+          name: props.pokemon.name,
+          id: props.pokemon.id,
+          img: props.pokemon.img,
+          types: props.pokemon.types,
+        });
+        props.getTeams();
+      } else {
+        alert("Ya se alcanzo el limite maximo de pokemons en el equipo");
+      }
     });
   }
-
   React.useEffect(() => {
+    console.log("Numero de peticiones");
     props.getTeams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

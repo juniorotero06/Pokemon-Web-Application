@@ -1,4 +1,4 @@
-import { ON_SEARCH, GET_TEAMS } from "../actions";
+import { ON_SEARCH, GET_TEAMS, DELETE_POKEMON } from "../actions";
 
 const initialState = {
   pokemonInfo: null,
@@ -21,6 +21,14 @@ function rootReducer(state = initialState, action) {
     return {
       ...state,
       pokemonTeam: action.payload,
+    };
+  }
+  if (action.type === DELETE_POKEMON) {
+    return {
+      ...state,
+      pokemonTeam: state.pokemonTeam.filter(
+        (pokemon) => pokemon.id !== action.payload
+      ),
     };
   }
   return state;

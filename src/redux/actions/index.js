@@ -5,6 +5,7 @@ import { onAuthStateChanged } from "@firebase/auth";
 
 const ON_SEARCH = "ON_SEARCH";
 const GET_TEAMS = "GET_TEAMS";
+const DELETE_POKEMON = "DELETE_POKEMON";
 
 //Actions creators
 //-OnSearch
@@ -14,7 +15,7 @@ export function onSearch(payload) {
       .get(`https://pokeapi.co/api/v2/pokemon/${payload}`)
       .then((obj) => dispatch({ type: ON_SEARCH, payload: obj.data }))
       .catch((error) => {
-        if (error.obj.status === 404) {
+        if (error.status === 404) {
           alert("Este pokemon no existe");
         }
       })
@@ -49,4 +50,11 @@ export function getTeams() {
   };
 }
 
-export { ON_SEARCH, GET_TEAMS };
+export function deletePokemon(id) {
+  return {
+    type: DELETE_POKEMON,
+    payload: id,
+  };
+}
+
+export { ON_SEARCH, GET_TEAMS, DELETE_POKEMON };
