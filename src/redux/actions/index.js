@@ -29,7 +29,7 @@ export function getTeams() {
   return async function (dispatch) {
     return onAuthStateChanged(auth, async (userFirebase) => {
       let pokms = [];
-      if (userFirebase) {
+      try {
         const datosTeam = await getDocs(
           collection(db, "users", userFirebase.uid, "team")
         );
@@ -41,10 +41,11 @@ export function getTeams() {
             },
             documentWithId
           );
-          //console.log("documentWithId: ", documentWithId);
           pokms.push(documentWithId);
         }
         dispatch({ type: GET_TEAMS, payload: pokms });
+      } catch (error) {
+        console.log("ya no hay usuario loggeado: ", error);
       }
     });
   };

@@ -8,13 +8,15 @@ import { connect } from "react-redux";
 export function Card(props) {
   const deletePokemon = async () => {
     onAuthStateChanged(auth, async (userFirebase) => {
-      if (userFirebase) {
+      try {
         await deleteDoc(
           doc(db, "users", userFirebase.uid, "team", props.documentId)
         );
+        props.deletePokemon(props.id);
+      } catch (error) {
+        console.log("ya no hay usuario loggeado: ", error);
       }
     });
-    props.deletePokemon(props.id);
   };
   return (
     <div>
