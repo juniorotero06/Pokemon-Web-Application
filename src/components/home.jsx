@@ -13,17 +13,26 @@ export function Home(props) {
   const cerrarSesion = () => {
     signOut(auth);
   };
+  const pokemonExist = (pokemon) => {
+    let exist = props.teams.findIndex((team) => team.id === pokemon.id);
+    console.log("exites: ", exist);
+    return exist === -1 ? false : true;
+  };
   async function createTeamCollection() {
     onAuthStateChanged(auth, async (userFirebase) => {
       if (props.teams.length < 6) {
         try {
-          await addDoc(collection(db, "users", userFirebase.uid, "team"), {
-            name: props.pokemon.name,
-            id: props.pokemon.id,
-            img: props.pokemon.img,
-            types: props.pokemon.types,
-          });
-          props.getTeams();
+          if (!pokemonExist(props.pokemon)) {
+            await addDoc(collection(db, "users", userFirebase.uid, "team"), {
+              name: props.pokemon.name,
+              id: props.pokemon.id,
+              img: props.pokemon.img,
+              types: props.pokemon.types,
+            });
+            props.getTeams();
+          } else {
+            alert("Este pokemon ya existe");
+          }
         } catch (error) {
           console.log("ya no hay usuario loggeado: ", error);
         }
