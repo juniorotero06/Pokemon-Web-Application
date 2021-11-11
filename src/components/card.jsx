@@ -1,22 +1,18 @@
 import React from "react";
 import { db, auth } from "../firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "@firebase/auth";
 import { deletePokemon } from "../redux/actions";
 import { connect } from "react-redux";
 
 export function Card(props) {
+  const user = auth.currentUser;
   const deletePokemon = async () => {
-    onAuthStateChanged(auth, async (userFirebase) => {
-      try {
-        await deleteDoc(
-          doc(db, "users", userFirebase.uid, "team", props.documentId)
-        );
-        props.deletePokemon(props.id);
-      } catch (error) {
-        console.log("ya no hay usuario loggeado: ", error);
-      }
-    });
+    try {
+      await deleteDoc(doc(db, "users", user.uid, "team", props.documentId));
+      props.deletePokemon(props.id);
+    } catch (error) {
+      console.log("ya no hay usuario loggeado: ", error);
+    }
   };
   return (
     <div>
@@ -35,6 +31,7 @@ export function Card(props) {
         </div>
       </div>
       <button onClick={deletePokemon}>Borrar del equipo</button>
+      <button>Seleccionar Pokemon</button>
     </div>
   );
 }

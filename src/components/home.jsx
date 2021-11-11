@@ -5,41 +5,39 @@ import CardSearch from "./cardSearch";
 import { db, auth } from "../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
-import { onAuthStateChanged } from "@firebase/auth";
 import { getTeams } from "../redux/actions";
 import { connect } from "react-redux";
 
 export function Home(props) {
+  const user = auth.currentUser;
+
   const cerrarSesion = () => {
     signOut(auth);
   };
   const pokemonExist = (pokemon) => {
     let exist = props.teams.findIndex((team) => team.id === pokemon.id);
-    console.log("exites: ", exist);
     return exist === -1 ? false : true;
   };
   async function createTeamCollection() {
-    onAuthStateChanged(auth, async (userFirebase) => {
-      if (props.teams.length < 6) {
+    if (props.teams.length < 6) {
+      if (!pokemonExist(props.pokemon)) {
         try {
-          if (!pokemonExist(props.pokemon)) {
-            await addDoc(collection(db, "users", userFirebase.uid, "team"), {
-              name: props.pokemon.name,
-              id: props.pokemon.id,
-              img: props.pokemon.img,
-              types: props.pokemon.types,
-            });
-            props.getTeams();
-          } else {
-            alert("Este pokemon ya existe");
-          }
+          await addDoc(collection(db, "users", user.uid, "team"), {
+            name: props.pokemon.name,
+            id: props.pokemon.id,
+            img: props.pokemon.img,
+            types: props.pokemon.types,
+          });
+          props.getTeams();
         } catch (error) {
           console.log("ya no hay usuario loggeado: ", error);
         }
       } else {
-        alert("Ya se alcanzo el limite maximo de pokemons en el equipo");
+        alert("Este pokemon ya existe");
       }
-    });
+    } else {
+      alert("Ya se alcanzo el limite maximo de pokemons en el equipo");
+    }
   }
   React.useEffect(() => {
     console.log("Numero de peticiones");

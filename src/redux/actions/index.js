@@ -1,11 +1,11 @@
 import axios from "axios";
 import { db, auth } from "../../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
-import { onAuthStateChanged } from "@firebase/auth";
 
 const ON_SEARCH = "ON_SEARCH";
 const GET_TEAMS = "GET_TEAMS";
 const DELETE_POKEMON = "DELETE_POKEMON";
+const user = auth.currentUser;
 
 //Actions creators
 //-OnSearch
@@ -27,27 +27,25 @@ export function onSearch(payload) {
 //-getTeams
 export function getTeams() {
   return async function (dispatch) {
-    return onAuthStateChanged(auth, async (userFirebase) => {
-      let pokms = [];
-      try {
-        const datosTeam = await getDocs(
-          collection(db, "users", userFirebase.uid, "team")
+    let pokms = [];
+    try {
+      const datosTeam = await getDocs(
+        collection(db, "users", user.uid, "team")
+      );
+      for (let team of datosTeam.docs) {
+        let documentWithId = team.data();
+        documentWithId = Object.assign(
+          {
+            documentId: team.id,
+          },
+          documentWithId
         );
-        for (let team of datosTeam.docs) {
-          let documentWithId = team.data();
-          documentWithId = Object.assign(
-            {
-              documentId: team.id,
-            },
-            documentWithId
-          );
-          pokms.push(documentWithId);
-        }
-        dispatch({ type: GET_TEAMS, payload: pokms });
-      } catch (error) {
-        console.log("ya no hay usuario loggeado: ", error);
+        pokms.push(documentWithId);
       }
-    });
+      dispatch({ type: GET_TEAMS, payload: pokms });
+    } catch (error) {
+      console.log("ya no hay usuario loggeado: ", error);
+    }
   };
 }
 
