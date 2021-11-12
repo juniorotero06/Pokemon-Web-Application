@@ -1,11 +1,14 @@
 import axios from "axios";
 import { db, auth } from "../../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
+import { onAuthStateChanged } from "@firebase/auth";
 
 const ON_SEARCH = "ON_SEARCH";
 const GET_TEAMS = "GET_TEAMS";
 const DELETE_POKEMON = "DELETE_POKEMON";
-const user = auth.currentUser;
+const POKEMON_SELECTED = "POKEMON_SELECTED";
+const PUSH_ARRAY = "PUSH_ARRAY";
+const DELETE_POKEMON_SELECTED = "DELETE_POKEMON_SELECTED";
 
 //Actions creators
 //-OnSearch
@@ -28,24 +31,26 @@ export function onSearch(payload) {
 export function getTeams() {
   return async function (dispatch) {
     let pokms = [];
-    try {
-      const datosTeam = await getDocs(
-        collection(db, "users", user.uid, "team")
-      );
-      for (let team of datosTeam.docs) {
-        let documentWithId = team.data();
-        documentWithId = Object.assign(
-          {
-            documentId: team.id,
-          },
-          documentWithId
+    onAuthStateChanged(auth, async (userFirebase) => {
+      try {
+        const datosTeam = await getDocs(
+          collection(db, "users", userFirebase.uid, "team")
         );
-        pokms.push(documentWithId);
+        for (let team of datosTeam.docs) {
+          let documentWithId = team.data();
+          documentWithId = Object.assign(
+            {
+              documentId: team.id,
+            },
+            documentWithId
+          );
+          pokms.push(documentWithId);
+        }
+        dispatch({ type: GET_TEAMS, payload: pokms });
+      } catch (error) {
+        console.log("ya no hay usuario loggeado: ", error);
       }
-      dispatch({ type: GET_TEAMS, payload: pokms });
-    } catch (error) {
-      console.log("ya no hay usuario loggeado: ", error);
-    }
+    });
   };
 }
 
@@ -56,4 +61,25 @@ export function deletePokemon(id) {
   };
 }
 
-export { ON_SEARCH, GET_TEAMS, DELETE_POKEMON };
+export function pokemonSelected(id) {
+  return function (dispatch) {
+    dispatch({ type: POKEMON_SELECTED, payload: id });
+    dispatch({ type: PUSH_ARRAY });
+  };
+}
+
+export function deletePokemonSelected(id) {
+  return {
+    type: DELETE_POKEMON_SELECTED,
+    payload: id,
+  };
+}
+
+export {
+  ON_SEARCH,
+  GET_TEAMS,
+  DELETE_POKEMON,
+  POKEMON_SELECTED,
+  PUSH_ARRAY,
+  DELETE_POKEMON_SELECTED,
+};

@@ -1,8 +1,17 @@
-import { ON_SEARCH, GET_TEAMS, DELETE_POKEMON } from "../actions";
+import {
+  ON_SEARCH,
+  GET_TEAMS,
+  DELETE_POKEMON,
+  POKEMON_SELECTED,
+  PUSH_ARRAY,
+  DELETE_POKEMON_SELECTED,
+} from "../actions";
 
 const initialState = {
   pokemonInfo: null,
   pokemonTeam: [],
+  pokemonSelected: null,
+  pushArray: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -27,6 +36,28 @@ function rootReducer(state = initialState, action) {
     return {
       ...state,
       pokemonTeam: state.pokemonTeam.filter(
+        (pokemon) => pokemon.id !== action.payload
+      ),
+    };
+  }
+  if (action.type === POKEMON_SELECTED) {
+    return {
+      ...state,
+      pokemonSelected: state.pokemonTeam.filter(
+        (pokemon) => pokemon.id === action.payload
+      ),
+    };
+  }
+  if (action.type === PUSH_ARRAY) {
+    return {
+      ...state,
+      pushArray: state.pushArray.concat(state.pokemonSelected),
+    };
+  }
+  if (action.type === DELETE_POKEMON_SELECTED) {
+    return {
+      ...state,
+      pushArray: state.pushArray.filter(
         (pokemon) => pokemon.id !== action.payload
       ),
     };

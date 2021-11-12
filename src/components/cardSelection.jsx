@@ -1,9 +1,10 @@
 import React from "react";
+import { deletePokemonSelected } from "../redux/actions";
+import { connect } from "react-redux";
 
-export default function CardSelection(props) {
+export function CardSelection(props) {
   return (
     <div>
-      <h1>Pokemon Seleccionado</h1>
       <div>
         <h5>Name: {props.name}</h5>
         <div>
@@ -18,7 +19,15 @@ export default function CardSelection(props) {
           </div>
         </div>
       </div>
-      {/* <button>Borrar del equipo</button> */}
+      <button onClick={() => props.deletePokemonSelected(props.id)}>X</button>
     </div>
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    deletePokemonSelected: (id) => dispatch(deletePokemonSelected(id)),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(CardSelection);

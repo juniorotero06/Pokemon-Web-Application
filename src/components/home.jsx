@@ -2,6 +2,7 @@ import React from "react";
 import Cards from "./cards";
 import SearchBar from "./searchBar";
 import CardSearch from "./cardSearch";
+import CardSelection from "./cardSelection";
 import { db, auth } from "../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
@@ -13,6 +14,7 @@ export function Home(props) {
 
   const cerrarSesion = () => {
     signOut(auth);
+    window.location.reload();
   };
   const pokemonExist = (pokemon) => {
     let exist = props.teams.findIndex((team) => team.id === pokemon.id);
@@ -51,8 +53,26 @@ export function Home(props) {
         <p>Este es el home de la app</p>
         <button onClick={cerrarSesion}>Cerrar Sesion</button>
       </div>
-      <div className="divsearch">
+      <div>
         <SearchBar />
+      </div>
+      <h1>Pokemon Seleccionado</h1>
+      <button onClick={() => window.location.reload()}>
+        Limpiar Seleccion
+      </button>
+      <div>
+        {props.pushArray
+          ? props.pushArray.map((p) => (
+              <CardSelection
+                key={p.id}
+                name={p.name}
+                types={p.types}
+                img={p.img}
+                id={p.id}
+                documentId={p.documentId}
+              />
+            ))
+          : null}
       </div>
       <div>
         {props.pokemon ? (
@@ -71,6 +91,7 @@ function mapStateToProps(state) {
   return {
     pokemon: state.pokemonInfo,
     teams: state.pokemonTeam,
+    pushArray: state.pushArray,
   };
 }
 

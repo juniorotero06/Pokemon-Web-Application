@@ -1,7 +1,7 @@
 import React from "react";
 import { db, auth } from "../firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
-import { deletePokemon } from "../redux/actions";
+import { deletePokemon, pokemonSelected } from "../redux/actions";
 import { connect } from "react-redux";
 
 export function Card(props) {
@@ -12,6 +12,17 @@ export function Card(props) {
       props.deletePokemon(props.id);
     } catch (error) {
       console.log("ya no hay usuario loggeado: ", error);
+    }
+  };
+  const pokemonExist = (pokemon) => {
+    let exist = props.pushArray.findIndex((push) => push.id === pokemon);
+    return exist === -1 ? false : true;
+  };
+  const SelectPokemon = () => {
+    if (!pokemonExist(props.id)) {
+      props.pokemonSelected(props.id);
+    } else {
+      alert("Este pokemon ya ha sido seleccionado");
     }
   };
   return (
@@ -31,15 +42,22 @@ export function Card(props) {
         </div>
       </div>
       <button onClick={deletePokemon}>Borrar del equipo</button>
-      <button>Seleccionar Pokemon</button>
+      <button onClick={SelectPokemon}>Seleccionar Pokemon</button>
     </div>
   );
+}
+
+function mapStateToProps(state) {
+  return {
+    pushArray: state.pushArray,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     deletePokemon: (id) => dispatch(deletePokemon(id)),
+    pokemonSelected: (idP) => dispatch(pokemonSelected(idP)),
   };
 }
 
-export default connect(null, mapDispatchToProps)(Card);
+export default connect(mapStateToProps, mapDispatchToProps)(Card);
