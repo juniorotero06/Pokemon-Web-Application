@@ -9,6 +9,8 @@ const DELETE_POKEMON = "DELETE_POKEMON";
 const POKEMON_SELECTED = "POKEMON_SELECTED";
 const PUSH_ARRAY = "PUSH_ARRAY";
 const DELETE_POKEMON_SELECTED = "DELETE_POKEMON_SELECTED";
+const AUTHENTICATED = "AUTHENTICATED";
+const SING_OUT = "SING_OUT";
 
 //Actions creators
 //-OnSearch
@@ -75,6 +77,22 @@ export function deletePokemonSelected(id) {
   };
 }
 
+export function isAuthenticated() {
+  return function (dispatch) {
+    onAuthStateChanged(auth, (userFirebase) => {
+      if (userFirebase) {
+        dispatch({ type: AUTHENTICATED });
+      }
+    });
+  };
+}
+
+export function singOut() {
+  return {
+    type: SING_OUT,
+  };
+}
+
 export {
   ON_SEARCH,
   GET_TEAMS,
@@ -82,4 +100,6 @@ export {
   POKEMON_SELECTED,
   PUSH_ARRAY,
   DELETE_POKEMON_SELECTED,
+  AUTHENTICATED,
+  SING_OUT,
 };

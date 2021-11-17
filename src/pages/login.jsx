@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import logo from "../logo.svg";
 import { auth } from "../firebase/firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { validate } from "./validate";
-import { Link } from "react-router-dom";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { validate } from "../components/validate";
+import { Link, useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import { isAuthenticated, singOut } from "../redux/actions";
 
-export default function Login(props) {
+function Login(props) {
+  let history = useHistory();
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -23,13 +26,19 @@ export default function Login(props) {
     });
   };
 
+  const cerrarSesion = () => {
+    signOut(auth);
+    props.singOut();
+    //window.location.reload();
+  };
+
   const iniciarSesion = (user, password) => {
     signInWithEmailAndPassword(auth, user, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
         console.log("Sesion iniciada con: ", user);
-        props.setUsuario(user);
+        props.isAuthenticated();
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -41,8 +50,8 @@ export default function Login(props) {
     e.preventDefault();
     const user = e.target.idUsername.value;
     const password = e.target.idPassword.value;
-    console.log(user, password);
     iniciarSesion(user, password);
+    history.push("/");
   };
 
   return (
@@ -78,6 +87,7 @@ export default function Login(props) {
             {error.password && <h6>{error.password}</h6>}
           </div>
           <input type="submit" value="Ingresar" />
+          <button onClick={cerrarSesion}>x</button>
         </form>
         <div>
           <Link to="/register">
@@ -88,3 +98,11 @@ export default function Login(props) {
     </div>
   );
 }
+function mapDispatchToProps(dispatch) {
+  return {
+    isAuthenticated: () => dispatch(isAuthenticated()),
+    singOut: () => dispatch(singOut()),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Login);

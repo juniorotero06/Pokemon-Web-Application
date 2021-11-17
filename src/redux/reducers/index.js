@@ -5,6 +5,8 @@ import {
   POKEMON_SELECTED,
   PUSH_ARRAY,
   DELETE_POKEMON_SELECTED,
+  AUTHENTICATED,
+  SING_OUT,
 } from "../actions";
 
 const initialState = {
@@ -12,6 +14,7 @@ const initialState = {
   pokemonTeam: [],
   pokemonSelected: null,
   pushArray: [],
+  authenticated: false,
 };
 
 function rootReducer(state = initialState, action) {
@@ -60,6 +63,18 @@ function rootReducer(state = initialState, action) {
       pushArray: state.pushArray.filter(
         (pokemon) => pokemon.id !== action.payload
       ),
+    };
+  }
+  if (action.type === AUTHENTICATED) {
+    return {
+      ...state,
+      authenticated: true,
+    };
+  }
+  if (action.type === SING_OUT) {
+    return {
+      ...state,
+      authenticated: false,
     };
   }
   return state;

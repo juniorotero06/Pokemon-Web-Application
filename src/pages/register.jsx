@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import logo from "../logo.svg";
-import { validate } from "./validate";
+import { validate } from "../components/validate";
 import { db, auth } from "../firebase/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
+import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import { isAuthenticated } from "../redux/actions";
 
-export default function Register(props) {
+export function Register(props) {
+  let history = useHistory();
   const [input, setInput] = useState({
     username: "",
     password: "",
@@ -33,9 +37,7 @@ export default function Register(props) {
         await setDoc(doc(db, "users", user.uid), {
           email: user.email,
         });
-      })
-      .then((userCredential) => {
-        props.setUsuario(userCredential.user);
+        props.isAuthenticated();
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -50,6 +52,7 @@ export default function Register(props) {
     const password = e.target.idPassword.value;
     console.log(user, password);
     crearUsuario(user, password);
+    history.push("/");
   };
 
   return (
@@ -90,3 +93,11 @@ export default function Register(props) {
     </div>
   );
 }
+
+function mapDispatchToProps(dispatch) {
+  return {
+    isAuthenticated: () => dispatch(isAuthenticated()),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Register);

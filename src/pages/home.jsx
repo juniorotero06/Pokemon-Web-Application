@@ -1,20 +1,23 @@
 import React from "react";
-import Cards from "./cards";
-import SearchBar from "./searchBar";
-import CardSearch from "./cardSearch";
-import CardSelection from "./cardSelection";
+import Cards from "../components/cards";
+import SearchBar from "../components/searchBar";
+import CardSearch from "../components/cardSearch";
+import CardSelection from "../components/cardSelection";
 import { db, auth } from "../firebase/firebaseConfig";
 import { signOut } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
-import { getTeams } from "../redux/actions";
+import { getTeams, singOut } from "../redux/actions";
 import { connect } from "react-redux";
+import { useHistory } from "react-router";
 
 export function Home(props) {
   const user = auth.currentUser;
-
+  let history = useHistory();
   const cerrarSesion = () => {
     signOut(auth);
-    window.location.reload();
+    props.singOut();
+    history.push("/login");
+    //window.location.reload();
   };
   const pokemonExist = (pokemon) => {
     let exist = props.teams.findIndex((team) => team.id === pokemon.id);
@@ -98,6 +101,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getTeams: () => dispatch(getTeams()),
+    singOut: () => dispatch(singOut()),
   };
 }
 
