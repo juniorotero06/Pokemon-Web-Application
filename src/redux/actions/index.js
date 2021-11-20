@@ -11,6 +11,7 @@ const PUSH_ARRAY = "PUSH_ARRAY";
 const DELETE_POKEMON_SELECTED = "DELETE_POKEMON_SELECTED";
 const AUTHENTICATED = "AUTHENTICATED";
 const SING_OUT = "SING_OUT";
+const CLEAR_CARD = "CLEAR_CARD";
 
 //Actions creators
 //-OnSearch
@@ -53,6 +54,12 @@ export function getTeams() {
         console.log("ya no hay usuario loggeado: ", error);
       }
     });
+  };
+}
+
+export function clearSearchCard() {
+  return {
+    type: CLEAR_CARD,
   };
 }
 
@@ -102,4 +109,5 @@ export {
   DELETE_POKEMON_SELECTED,
   AUTHENTICATED,
   SING_OUT,
+  CLEAR_CARD,
 };

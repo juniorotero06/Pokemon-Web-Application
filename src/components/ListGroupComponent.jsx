@@ -3,9 +3,9 @@ import { db, auth } from "../firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 import { deletePokemon, pokemonSelected } from "../redux/actions";
 import { connect } from "react-redux";
-import { Card, ListGroup, ListGroupItem, Button, Badge } from "react-bootstrap";
+import { ListGroup, Button, Badge } from "react-bootstrap";
 
-export function CardComponent(props) {
+function ListGroupComponent(props) {
   const user = auth.currentUser;
   const deletePokemon = async () => {
     try {
@@ -26,32 +26,43 @@ export function CardComponent(props) {
       alert("Este pokemon ya ha sido seleccionado");
     }
   };
+  function capitalizarPrimeraLetra(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
   return (
     <div>
-      <Card style={{ width: "10rem" }}>
-        <Card.Img variant="top" src={props.img} />
-        <Card.Body>
-          <Card.Title>{props.name}</Card.Title>
-        </Card.Body>
-        <ListGroup className="list-group-flush">
-          <ListGroupItem>ID: {props.id}</ListGroupItem>
-          <ListGroupItem>
+      <ListGroup as="ol">
+        <ListGroup.Item
+          as="li"
+          className="d-flex justify-content-between align-items-start"
+        >
+          <div>
+            <img src={props.img} width="80" height="80" alt="" />
+          </div>
+          <div className="ms-1 me-3">
+            <div className="fw-bold">{capitalizarPrimeraLetra(props.name)}</div>
+            <Badge className="me-1" variant="primary" pill>
+              ID: {props.id}
+            </Badge>
             <Badge pill bg="info">
               Types: {props.types.map((type) => type.type.name + " ")}
             </Badge>
-          </ListGroupItem>
-        </ListGroup>
-        <Card.Body>
-          <div className="mb-2">
-            <Button variant="outline-danger" size="sm" onClick={deletePokemon}>
-              Borrar del equipo
-            </Button>{" "}
-            <Button variant="outline-primary" size="sm" onClick={SelectPokemon}>
-              Seleccionar Pokemon
+          </div>
+          <div className="row col-sm-2 ">
+            <Button
+              className="mb-2"
+              variant="danger"
+              size="sm"
+              onClick={deletePokemon}
+            >
+              X
+            </Button>
+            <Button variant="success" size="sm" onClick={SelectPokemon}>
+              ✓
             </Button>
           </div>
-        </Card.Body>
-      </Card>
+        </ListGroup.Item>
+      </ListGroup>
     </div>
   );
 }
@@ -69,4 +80,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CardComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(ListGroupComponent);

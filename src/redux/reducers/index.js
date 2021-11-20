@@ -7,6 +7,7 @@ import {
   DELETE_POKEMON_SELECTED,
   AUTHENTICATED,
   SING_OUT,
+  CLEAR_CARD,
 } from "../actions";
 
 const initialState = {
@@ -77,6 +78,13 @@ function rootReducer(state = initialState, action) {
       authenticated: false,
     };
   }
+  if (action.type === CLEAR_CARD) {
+    return {
+      ...state,
+      pokemonInfo: null,
+    };
+  }
+
   return state;
 }
 

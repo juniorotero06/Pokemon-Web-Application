@@ -1,25 +1,31 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { onSearch } from "../redux/actions";
+import { Button, Form, FormControl } from "react-bootstrap";
 
 export function SearchBar(props) {
   const [pokemon, setPokemon] = useState("");
   return (
-    <div className="searchbar">
-      <form
+    <div>
+      <Form
+        className="d-flex"
         onSubmit={(e) => {
           e.preventDefault();
           props.onSearch(pokemon);
         }}
       >
-        <input
-          type="text"
+        <FormControl
+          type="search"
+          className="me-2"
+          aria-label="Search"
           placeholder="Pokemon..."
           value={pokemon}
           onChange={(e) => setPokemon(e.target.value)}
         />
-        <input type="submit" value="Buscar" />
-      </form>
+        <Button variant="outline-success" type="submit">
+          Search
+        </Button>
+      </Form>
     </div>
   );
 }

@@ -1,25 +1,34 @@
 import React from "react";
 import { deletePokemonSelected } from "../redux/actions";
 import { connect } from "react-redux";
+import { Card, ListGroup, ListGroupItem, Button, Badge } from "react-bootstrap";
 
 export function CardSelection(props) {
   return (
     <div>
-      <div>
-        <h5>Name: {props.name}</h5>
-        <div>
-          <div>
-            <p>Types: {props.types.map((type) => type.type.name + " ")}</p>
-          </div>
-          <div>
-            <p>Id: {props.id}</p>
-          </div>
-          <div>
-            <img src={props.img} width="80" height="80" alt="" />
-          </div>
-        </div>
-      </div>
-      <button onClick={() => props.deletePokemonSelected(props.id)}>X</button>
+      <Card style={{ width: "10rem" }}>
+        <Card.Img variant="top" src={props.img} />
+        <Card.Body>
+          <Card.Title>{props.name}</Card.Title>
+        </Card.Body>
+        <ListGroup className="list-group-flush">
+          <ListGroupItem>ID: {props.id}</ListGroupItem>
+          <ListGroupItem>
+            <Badge pill bg="info">
+              Types: {props.types.map((type) => type.type.name + " ")}
+            </Badge>
+          </ListGroupItem>
+        </ListGroup>
+        <Card.Body>
+          <Button
+            variant="outline-danger"
+            size="sm"
+            onClick={() => props.deletePokemonSelected(props.id)}
+          >
+            X
+          </Button>
+        </Card.Body>
+      </Card>
     </div>
   );
 }

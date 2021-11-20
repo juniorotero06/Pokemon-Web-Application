@@ -1,24 +1,15 @@
 import React from "react";
 import Cards from "../components/cards";
-import SearchBar from "../components/searchBar";
-import CardSearch from "../components/cardSearch";
+import NavBar from "../components/NavBar";
 import CardSelection from "../components/cardSelection";
+import ModalComponent from "../components/Modal";
 import { db, auth } from "../firebase/firebaseConfig";
-import { signOut } from "firebase/auth";
 import { collection, addDoc } from "firebase/firestore";
-import { getTeams, singOut } from "../redux/actions";
+import { getTeams, clearSearchCard } from "../redux/actions";
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
 
 export function Home(props) {
   const user = auth.currentUser;
-  let history = useHistory();
-  const cerrarSesion = () => {
-    signOut(auth);
-    props.singOut();
-    history.push("/login");
-    //window.location.reload();
-  };
   const pokemonExist = (pokemon) => {
     let exist = props.teams.findIndex((team) => team.id === pokemon.id);
     return exist === -1 ? false : true;
@@ -33,6 +24,7 @@ export function Home(props) {
             img: props.pokemon.img,
             types: props.pokemon.types,
           });
+          props.clearSearchCard();
           props.getTeams();
         } catch (error) {
           console.log("ya no hay usuario loggeado: ", error);
@@ -45,7 +37,6 @@ export function Home(props) {
     }
   }
   React.useEffect(() => {
-    console.log("Numero de peticiones");
     props.getTeams();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -53,39 +44,31 @@ export function Home(props) {
   return (
     <div>
       <div>
-        <p>Este es el home de la app</p>
-        <button onClick={cerrarSesion}>Cerrar Sesion</button>
+        <NavBar />
       </div>
-      <div>
-        <SearchBar />
+      <div className="container mt-3">
+        <ModalComponent createTeamCollection={createTeamCollection} />
+        <div>{props.teams ? <Cards /> : null}</div>
       </div>
-      <h1>Pokemon Seleccionado</h1>
-      <button onClick={() => window.location.reload()}>
-        Limpiar Seleccion
-      </button>
-      <div>
-        {props.pushArray
-          ? props.pushArray.map((p) => (
-              <CardSelection
-                key={p.id}
-                name={p.name}
-                types={p.types}
-                img={p.img}
-                id={p.id}
-                documentId={p.documentId}
-              />
-            ))
-          : null}
+      <h3>Pokemon Seleccionado</h3>
+      <div className="container">
+        <div className="row justify-content-md-center">
+          {props.pushArray
+            ? props.pushArray.map((p) => (
+                <div className="col mb-5">
+                  <CardSelection
+                    key={p.id}
+                    name={p.name}
+                    types={p.types}
+                    img={p.img}
+                    id={p.id}
+                    documentId={p.documentId}
+                  />
+                </div>
+              ))
+            : null}
+        </div>
       </div>
-      <div>
-        {props.pokemon ? (
-          <CardSearch
-            key={props.pokemon.id}
-            createTeamCollection={createTeamCollection}
-          />
-        ) : null}
-      </div>
-      <div>{props.teams ? <Cards /> : null}</div>
     </div>
   );
 }
@@ -101,7 +84,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     getTeams: () => dispatch(getTeams()),
-    singOut: () => dispatch(singOut()),
+    clearSearchCard: () => dispatch(clearSearchCard()),
   };
 }
 

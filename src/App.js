@@ -7,6 +7,7 @@ import PrivateRoute from "./Routes/PrivateRoute";
 import RouteLogin from "./Routes/RouteLogin";
 import RouteRegister from "./Routes/RouteRegister";
 import { Switch } from "react-router";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
