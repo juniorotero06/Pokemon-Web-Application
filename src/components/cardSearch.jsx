@@ -1,7 +1,15 @@
 import React from "react";
 import { clearSearchCard } from "../redux/actions";
 import { connect } from "react-redux";
-import { Card, ListGroup, ListGroupItem, Button, Badge } from "react-bootstrap";
+import {
+  Card,
+  ListGroup,
+  ListGroupItem,
+  Button,
+  Badge,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 
 export function CardSearch(props) {
   return (
@@ -21,20 +29,32 @@ export function CardSearch(props) {
         </ListGroup>
         <Card.Body>
           <div className="col-md-5">
-            <Button
-              variant="success"
-              size="sm"
-              onClick={props.createTeamCollection}
+            <OverlayTrigger
+              overlay={
+                <Tooltip id="tooltip-disabled">Añadir al Equipo</Tooltip>
+              }
             >
-              ✓
-            </Button>
-            <Button
-              variant="danger"
-              size="sm"
-              onClick={() => props.clearSearchCard()}
+              <Button
+                variant="success"
+                size="sm"
+                onClick={props.createTeamCollection}
+              >
+                ✓
+              </Button>
+            </OverlayTrigger>
+            <OverlayTrigger
+              overlay={
+                <Tooltip id="tooltip-disabled">Limpiar Busqueda</Tooltip>
+              }
             >
-              X
-            </Button>
+              <Button
+                variant="danger"
+                size="sm"
+                onClick={() => props.clearSearchCard()}
+              >
+                X
+              </Button>
+            </OverlayTrigger>
           </div>
         </Card.Body>
       </Card>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import logo from "../logo.svg";
 import { auth } from "../firebase/firebaseConfig";
-import { signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { validate } from "../components/validate";
 import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { isAuthenticated, singOut } from "../redux/actions";
+import { isAuthenticated } from "../redux/actions";
 
 function Login(props) {
   let history = useHistory();
@@ -24,12 +24,6 @@ function Login(props) {
       ...input,
       [e.target.name]: e.target.value,
     });
-  };
-
-  const cerrarSesion = () => {
-    signOut(auth);
-    props.singOut();
-    //window.location.reload();
   };
 
   const iniciarSesion = (user, password) => {
@@ -58,36 +52,58 @@ function Login(props) {
     <div>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <div>
-          <p>Iniciar Sesión</p>
-        </div>
+        <h3>Iniciar Sesión</h3>
         <form onSubmit={submitHandler}>
-          <div>
-            <label>Username: </label>
-            <input
-              className={error.username}
-              type="text"
-              name="username"
-              id="idUsername"
-              onChange={handleInputChange}
-              value={input.username}
-            />
-            {error.username && <h6>{error.username}</h6>}
+          <div className="container mb-3">
+            <div class="row g-3 align-items-center">
+              <div class="col-auto">
+                <label for="exampleInputEmail1" className="form-label">
+                  Email
+                </label>
+              </div>
+              <div class="col-sm">
+                <input
+                  type="text"
+                  className={`${error.username} form-control`}
+                  name="username"
+                  id="idUsername"
+                  onChange={handleInputChange}
+                  value={input.username}
+                  aria-describedby="emailHelp"
+                />
+              </div>
+            </div>
+            <div id="emailHelp" className="form-text">
+              {error.username && <h6>{error.username}</h6>}
+            </div>
           </div>
-          <div>
-            <label>Password: </label>
-            <input
-              className={error.password}
-              type="text"
-              name="password"
-              id="idPassword"
-              onChange={handleInputChange}
-              value={input.password}
-            />
-            {error.password && <h6>{error.password}</h6>}
+          <div className="container mb-3">
+            <div class="row g-3 align-items-center">
+              <div class="col-auto">
+                <label for="exampleInputPassword1" className="form-label">
+                  Password
+                </label>
+              </div>
+              <div class="col-sm">
+                <input
+                  type="password"
+                  className={`${error.password} form-control`}
+                  name="password"
+                  id="idPassword"
+                  onChange={handleInputChange}
+                  value={input.password}
+                />
+              </div>
+            </div>
+            <div id="passwordHelpInline" className="form-text">
+              {error.password && <h6>{error.password}</h6>}
+            </div>
           </div>
-          <input type="submit" value="Ingresar" />
-          <button onClick={cerrarSesion}>x</button>
+          <input
+            type="submit"
+            value="Ingresar"
+            className="btn btn-primary mb-3"
+          />
         </form>
         <div>
           <Link to="/register">
@@ -101,7 +117,6 @@ function Login(props) {
 function mapDispatchToProps(dispatch) {
   return {
     isAuthenticated: () => dispatch(isAuthenticated()),
-    singOut: () => dispatch(singOut()),
   };
 }
 

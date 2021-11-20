@@ -28,7 +28,7 @@ function ModalComponent(props) {
         <Modal.Body>
           <SearchBar />
           <div>
-            <h3>Pokemon Buscado</h3>
+            <h5 className="mt-3">Pokemon Buscado:</h5>
             {props.pokemon ? (
               <CardSearch
                 key={props.pokemon.id}

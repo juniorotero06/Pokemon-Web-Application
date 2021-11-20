@@ -3,7 +3,13 @@ import { db, auth } from "../firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 import { deletePokemon, pokemonSelected } from "../redux/actions";
 import { connect } from "react-redux";
-import { ListGroup, Button, Badge } from "react-bootstrap";
+import {
+  ListGroup,
+  Button,
+  Badge,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 
 function ListGroupComponent(props) {
   const user = auth.currentUser;
@@ -40,7 +46,7 @@ function ListGroupComponent(props) {
             <img src={props.img} width="80" height="80" alt="" />
           </div>
           <div className="ms-1 me-3">
-            <div className="fw-bold">{capitalizarPrimeraLetra(props.name)}</div>
+            <h5 className="fw-bold">{capitalizarPrimeraLetra(props.name)}</h5>
             <Badge className="me-1" variant="primary" pill>
               ID: {props.id}
             </Badge>
@@ -49,17 +55,31 @@ function ListGroupComponent(props) {
             </Badge>
           </div>
           <div className="row col-sm-2 ">
-            <Button
-              className="mb-2"
-              variant="danger"
-              size="sm"
-              onClick={deletePokemon}
+            <OverlayTrigger
+              overlay={
+                <Tooltip id="tooltip-disabled">
+                  Eliminar Pokemon del Team
+                </Tooltip>
+              }
             >
-              X
-            </Button>
-            <Button variant="success" size="sm" onClick={SelectPokemon}>
-              ✓
-            </Button>
+              <Button
+                className="mb-2"
+                variant="danger"
+                size="sm"
+                onClick={deletePokemon}
+              >
+                X
+              </Button>
+            </OverlayTrigger>
+            <OverlayTrigger
+              overlay={
+                <Tooltip id="tooltip-disabled">Seleccionar Pokemon</Tooltip>
+              }
+            >
+              <Button variant="success" size="sm" onClick={SelectPokemon}>
+                ✓
+              </Button>
+            </OverlayTrigger>
           </div>
         </ListGroup.Item>
       </ListGroup>
