@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 import { db, auth } from "../../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { onAuthStateChanged } from "@firebase/auth";
@@ -22,8 +23,18 @@ export function onSearch(payload) {
       .get(`https://pokeapi.co/api/v2/pokemon/${payload}`)
       .then((obj) => dispatch({ type: ON_SEARCH, payload: obj.data }))
       .catch((error) => {
-        if (error.status === 404) {
-          alert("Este pokemon no existe");
+        if (error.response.status === 404) {
+          Swal.fire({
+            icon: "error",
+            allowOutsideClick: false,
+            title: "Oops...",
+            text: "Este Pokemon no existe, Revisa si estas escribiendo bien el nombre!!",
+            confirmButtonText: "Ok",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });
         }
       })
       .finally(() => {
