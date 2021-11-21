@@ -19,7 +19,7 @@ export function CardSelection(props) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   return (
-    <div>
+    <div className="col-4 text-start my-3">
       <Card style={{ width: "10rem" }}>
         <Card.Img variant="top" src={props.img} />
         <Card.Body>

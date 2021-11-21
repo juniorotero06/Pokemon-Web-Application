@@ -58,53 +58,55 @@ function ListGroupComponent(props) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   return (
-    <div>
-      <ListGroup as="ol">
-        <ListGroup.Item
-          as="li"
-          className="d-flex justify-content-between align-items-start"
-        >
-          <div>
-            <img src={props.img} width="80" height="80" alt="" />
-          </div>
-          <div className="ms-1 me-3">
-            <h5 className="fw-bold">{capitalizarPrimeraLetra(props.name)}</h5>
-            <Badge className="me-1" variant="primary" pill>
-              ID: {props.id}
-            </Badge>
-            <Badge pill bg="info">
-              Types: {props.types.map((type) => type.type.name + " ")}
-            </Badge>
-          </div>
-          <div className="row col-sm-2 ">
-            <OverlayTrigger
-              overlay={
-                <Tooltip id="tooltip-disabled">
-                  Eliminar Pokemon del Team
-                </Tooltip>
-              }
-            >
-              <Button
-                className="mb-2"
-                variant="danger"
-                size="sm"
-                onClick={deletePokemon}
+    <div className="col-12">
+      <div>
+        <ListGroup as="ol">
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between align-items-start"
+          >
+            <div>
+              <img src={props.img} width="80" height="80" alt="" />
+            </div>
+            <div className="ms-1">
+              <h5 className="fw-bold">{capitalizarPrimeraLetra(props.name)}</h5>
+              <Badge className="me-1" variant="primary" pill>
+                ID: {props.id}
+              </Badge>
+              <Badge pill bg="info">
+                Types: {props.types.map((type) => type.type.name + " ")}
+              </Badge>
+            </div>
+            <div className="row col-sm-2 ">
+              <OverlayTrigger
+                overlay={
+                  <Tooltip id="tooltip-disabled">
+                    Eliminar Pokemon del Team
+                  </Tooltip>
+                }
               >
-                X
-              </Button>
-            </OverlayTrigger>
-            <OverlayTrigger
-              overlay={
-                <Tooltip id="tooltip-disabled">Seleccionar Pokemon</Tooltip>
-              }
-            >
-              <Button variant="success" size="sm" onClick={SelectPokemon}>
-                ✓
-              </Button>
-            </OverlayTrigger>
-          </div>
-        </ListGroup.Item>
-      </ListGroup>
+                <Button
+                  className="mb-2"
+                  variant="danger"
+                  size="sm"
+                  onClick={deletePokemon}
+                >
+                  X
+                </Button>
+              </OverlayTrigger>
+              <OverlayTrigger
+                overlay={
+                  <Tooltip id="tooltip-disabled">Seleccionar Pokemon</Tooltip>
+                }
+              >
+                <Button variant="success" size="sm" onClick={SelectPokemon}>
+                  ✓
+                </Button>
+              </OverlayTrigger>
+            </div>
+          </ListGroup.Item>
+        </ListGroup>
+      </div>
     </div>
   );
 }

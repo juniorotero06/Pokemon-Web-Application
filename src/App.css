@@ -43,3 +43,14 @@
   margin: auto;
   background-color: #42424295;
 }
+
+@media (max-width: 768px) {
+  .listPokemon {
+    width: 100%;
+  }
+}
+@media (min-width: 769px) {
+  .listPokemon {
+    width: 50%;
+  }
+}
