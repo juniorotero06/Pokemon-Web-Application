@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import SearchBar from "./searchBar";
 import CardSearch from "../components/cardSearch";
+import { clearSearchCard } from "../redux/actions";
 import { connect } from "react-redux";
 import { Modal, Button } from "react-bootstrap";
 import LoadingComponent from "./Loading";
@@ -8,7 +9,10 @@ import LoadingComponent from "./Loading";
 function ModalComponent(props) {
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    props.clearSearchCard();
+  };
   const handleShow = () => setShow(true);
 
   return (
@@ -52,4 +56,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(ModalComponent);
+function mapDispatchToProps(dispatch) {
+  return {
+    clearSearchCard: () => dispatch(clearSearchCard()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModalComponent);

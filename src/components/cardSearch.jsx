@@ -1,5 +1,4 @@
 import React from "react";
-import { clearSearchCard } from "../redux/actions";
 import { connect } from "react-redux";
 import {
   Card,
@@ -47,19 +46,6 @@ export function CardSearch(props) {
                 ✓
               </Button>
             </OverlayTrigger>
-            <OverlayTrigger
-              overlay={
-                <Tooltip id="tooltip-disabled">Limpiar Busqueda</Tooltip>
-              }
-            >
-              <Button
-                variant="danger"
-                size="sm"
-                onClick={() => props.clearSearchCard()}
-              >
-                X
-              </Button>
-            </OverlayTrigger>
           </div>
         </Card.Body>
       </Card>
@@ -73,10 +59,4 @@ function mapStateToProps(state) {
   };
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    clearSearchCard: () => dispatch(clearSearchCard()),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CardSearch);
+export default connect(mapStateToProps)(CardSearch);
