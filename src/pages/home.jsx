@@ -3,9 +3,11 @@ import Cards from "../components/cards";
 import NavBar from "../components/NavBar";
 import CardSelection from "../components/cardSelection";
 import ModalComponent from "../components/Modal";
+import LoadingComponent from "../components/Loading";
 import { db, auth } from "../firebase/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
 import { getTeams, clearSearchCard } from "../redux/actions";
+import Swal from "sweetalert2";
 import { connect } from "react-redux";
 
 export function Home(props) {
@@ -24,16 +26,31 @@ export function Home(props) {
             img: props.pokemon.img,
             types: props.pokemon.types,
           });
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Pokemon agregado al equipo",
+            showConfirmButton: false,
+            timer: 1000,
+          });
           props.clearSearchCard();
           props.getTeams();
         } catch (error) {
           console.log("ya no hay usuario loggeado: ", error);
         }
       } else {
-        alert("Este pokemon ya existe");
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Este Pokemon ya existe en el equipo!!",
+        });
       }
     } else {
-      alert("Ya se alcanzo el limite maximo de pokemons en el equipo");
+      Swal.fire({
+        icon: "error",
+        title: "Limite máximo alcanzado",
+        text: "Ya se alcanzo el limite maximo de pokemons en el equipo",
+      });
     }
   }
   React.useEffect(() => {
@@ -47,11 +64,21 @@ export function Home(props) {
         <NavBar />
       </div>
       <div className="container mt-3">
-        <ModalComponent createTeamCollection={createTeamCollection} />
-        <div>{props.teams ? <Cards /> : null}</div>
-      </div>
-      <h3>Pokemon Seleccionado</h3>
-      <div className="container">
+        <div className="row justify-content-md-center">
+          <div className="col-sm">
+            <ModalComponent createTeamCollection={createTeamCollection} />
+            <div>
+              {props.loading ? (
+                <div className="mt-3">
+                  <LoadingComponent />
+                </div>
+              ) : props.teams ? (
+                <Cards />
+              ) : null}
+            </div>
+          </div>
+        </div>
+        <h3>Pokemon Seleccionado</h3>
         <div className="row justify-content-md-center">
           {props.pushArray
             ? props.pushArray.map((p) => (
@@ -78,6 +105,7 @@ function mapStateToProps(state) {
     pokemon: state.pokemonInfo,
     teams: state.pokemonTeam,
     pushArray: state.pushArray,
+    loading: state.loading,
   };
 }
 

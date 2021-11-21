@@ -12,12 +12,17 @@ import {
 } from "react-bootstrap";
 
 export function CardSearch(props) {
+  function capitalizarPrimeraLetra(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
   return (
     <div className="conteiner row justify-content-md-center">
       <Card style={{ width: "10rem" }}>
         <Card.Img variant="top" src={props.pokemon?.img} />
         <Card.Body>
-          <Card.Title>{props.pokemon?.name}</Card.Title>
+          <Card.Title>
+            {capitalizarPrimeraLetra(props.pokemon?.name)}
+          </Card.Title>
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroupItem>ID: {props.pokemon?.id}</ListGroupItem>
@@ -28,7 +33,7 @@ export function CardSearch(props) {
           </ListGroupItem>
         </ListGroup>
         <Card.Body>
-          <div className="col-md-5">
+          <div>
             <OverlayTrigger
               overlay={
                 <Tooltip id="tooltip-disabled">Añadir al Equipo</Tooltip>

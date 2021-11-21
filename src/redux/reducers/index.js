@@ -16,12 +16,14 @@ const initialState = {
   pokemonSelected: null,
   pushArray: [],
   authenticated: false,
+  loading: false,
 };
 
 function rootReducer(state = initialState, action) {
   if (action.type === ON_SEARCH) {
     return {
       ...state,
+      loading: false,
       pokemonInfo: {
         name: action.payload.name,
         id: action.payload.id,
@@ -33,6 +35,7 @@ function rootReducer(state = initialState, action) {
   if (action.type === GET_TEAMS) {
     return {
       ...state,
+      loading: false,
       pokemonTeam: action.payload,
     };
   }
@@ -82,6 +85,12 @@ function rootReducer(state = initialState, action) {
     return {
       ...state,
       pokemonInfo: null,
+    };
+  }
+  if (action.type === "LOADING") {
+    return {
+      ...state,
+      loading: true,
     };
   }
 

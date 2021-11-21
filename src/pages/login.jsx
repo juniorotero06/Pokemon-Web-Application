@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import logo from "../logo.svg";
 import { auth } from "../firebase/firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { validate } from "../components/validate";
@@ -51,64 +50,70 @@ function Login(props) {
   return (
     <div>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h3>Iniciar Sesión</h3>
-        <form onSubmit={submitHandler}>
-          <div className="container mb-3">
-            <div class="row g-3 align-items-center">
-              <div class="col-auto">
-                <label for="exampleInputEmail1" className="form-label">
-                  Email
-                </label>
-              </div>
-              <div class="col-sm">
-                <input
-                  type="text"
-                  className={`${error.username} form-control`}
-                  name="username"
-                  id="idUsername"
-                  onChange={handleInputChange}
-                  value={input.username}
-                  aria-describedby="emailHelp"
-                />
-              </div>
-            </div>
-            <div id="emailHelp" className="form-text">
-              {error.username && <h6>{error.username}</h6>}
-            </div>
-          </div>
-          <div className="container mb-3">
-            <div class="row g-3 align-items-center">
-              <div class="col-auto">
-                <label for="exampleInputPassword1" className="form-label">
-                  Password
-                </label>
-              </div>
-              <div class="col-sm">
-                <input
-                  type="password"
-                  className={`${error.password} form-control`}
-                  name="password"
-                  id="idPassword"
-                  onChange={handleInputChange}
-                  value={input.password}
-                />
-              </div>
-            </div>
-            <div id="passwordHelpInline" className="form-text">
-              {error.password && <h6>{error.password}</h6>}
-            </div>
-          </div>
-          <input
-            type="submit"
-            value="Ingresar"
-            className="btn btn-primary mb-3"
-          />
-        </form>
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png"
+          className="App-logo"
+          alt="logo"
+        />
         <div>
-          <Link to="/register">
-            <h6>"¿No tienes Cuenta? ¡Registrate!"</h6>
-          </Link>
+          <form className="formLogin" onSubmit={submitHandler}>
+            <h3>Iniciar Sesión</h3>
+            <div className="container mb-3">
+              <div className="row g-3 align-items-center">
+                <div className="col-auto">
+                  <label htmlFor="exampleInputEmail1" className="form-label">
+                    Email
+                  </label>
+                </div>
+                <div className="col-sm">
+                  <input
+                    type="text"
+                    className={`${error.username} form-control`}
+                    name="username"
+                    id="idUsername"
+                    onChange={handleInputChange}
+                    value={input.username}
+                    aria-describedby="emailHelp"
+                  />
+                </div>
+              </div>
+              <div id="emailHelp" className="form-text">
+                {error.username && <h6>{error.username}</h6>}
+              </div>
+            </div>
+            <div className="container mb-3">
+              <div className="row g-3 align-items-center">
+                <div className="col-auto">
+                  <label htmlFor="exampleInputPassword1" className="form-label">
+                    Password
+                  </label>
+                </div>
+                <div className="col-sm">
+                  <input
+                    type="password"
+                    className={`${error.password} form-control`}
+                    name="password"
+                    id="idPassword"
+                    onChange={handleInputChange}
+                    value={input.password}
+                  />
+                </div>
+              </div>
+              <div id="passwordHelpInline" className="form-text">
+                {error.password && <h6>{error.password}</h6>}
+              </div>
+            </div>
+            <input
+              type="submit"
+              value="Ingresar"
+              className="btn btn-primary mb-3"
+            />
+            <div>
+              <Link to="/register" style={{ color: "#FFF" }}>
+                <h6>"¿No tienes Cuenta? ¡Registrate!"</h6>
+              </Link>
+            </div>
+          </form>
         </div>
       </header>
     </div>

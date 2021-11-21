@@ -7,14 +7,13 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
-  background-color: #282c34;
+  background-image: url("https://www.xtrafondos.com/wallpapers/resoluciones/21/pokemon-unite_1920x1080_8254.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  background-color: #b8b9b9;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -35,4 +34,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.formLogin {
+  width: 300px;
+  padding: 16px;
+  border-radius: 10px;
+  margin: auto;
+  background-color: #42424295;
 }

@@ -3,6 +3,7 @@ import { db, auth } from "../firebase/firebaseConfig";
 import { doc, deleteDoc } from "firebase/firestore";
 import { deletePokemon, pokemonSelected } from "../redux/actions";
 import { connect } from "react-redux";
+import Swal from "sweetalert2";
 import {
   ListGroup,
   Button,
@@ -15,8 +16,25 @@ function ListGroupComponent(props) {
   const user = auth.currentUser;
   const deletePokemon = async () => {
     try {
-      await deleteDoc(doc(db, "users", user.uid, "team", props.documentId));
-      props.deletePokemon(props.id);
+      Swal.fire({
+        title: "¿Estás seguro?",
+        text: "Este proceso no se puede revertir",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, Borralo!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await deleteDoc(doc(db, "users", user.uid, "team", props.documentId));
+          props.deletePokemon(props.id);
+          Swal.fire(
+            "¡Pokemon Borrado!",
+            "El Pokemon se ha borrado de la base de datos",
+            "success"
+          );
+        }
+      });
     } catch (error) {
       console.log("ya no hay usuario loggeado: ", error);
     }
@@ -29,7 +47,11 @@ function ListGroupComponent(props) {
     if (!pokemonExist(props.id)) {
       props.pokemonSelected(props.id);
     } else {
-      alert("Este pokemon ya ha sido seleccionado");
+      Swal.fire({
+        icon: "error",
+        title: "Ooops...",
+        text: "Este pokemon ya ha sido seleccionado",
+      });
     }
   };
   function capitalizarPrimeraLetra(str) {

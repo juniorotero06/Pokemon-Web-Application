@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import logo from "../logo.svg";
 import { validate } from "../components/validate";
 import { db, auth } from "../firebase/firebaseConfig";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -58,17 +57,21 @@ export function Register(props) {
   return (
     <div>
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h3>Registro</h3>
-        <form onSubmit={submitHandler}>
+        <img
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/2560px-International_Pok%C3%A9mon_logo.svg.png"
+          className="App-logo"
+          alt="logo"
+        />
+        <form className="formLogin" onSubmit={submitHandler}>
+          <h3 className="mb-3">Registro</h3>
           <div className="container mb-3">
-            <div class="row g-3 align-items-center">
-              <div class="col-auto">
-                <label for="exampleInputEmail1" className="form-label">
+            <div className="row g-3 align-items-center">
+              <div className="col-auto">
+                <label htmlFor="exampleInputEmail1" className="form-label">
                   Email
                 </label>
               </div>
-              <div class="col-sm">
+              <div className="col-sm">
                 <input
                   type="text"
                   className={`${error.username} form-control`}
@@ -85,13 +88,13 @@ export function Register(props) {
             </div>
           </div>
           <div className="container mb-3">
-            <div class="row g-3 align-items-center">
-              <div class="col-auto">
-                <label for="exampleInputPassword1" className="form-label">
+            <div className="row g-3 align-items-center">
+              <div className="col-auto">
+                <label htmlFor="exampleInputPassword1" className="form-label">
                   Password
                 </label>
               </div>
-              <div class="col-sm">
+              <div className="col-sm">
                 <input
                   type="password"
                   className={`${error.password} form-control`}

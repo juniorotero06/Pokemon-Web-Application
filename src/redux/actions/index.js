@@ -17,6 +17,7 @@ const CLEAR_CARD = "CLEAR_CARD";
 //-OnSearch
 export function onSearch(payload) {
   return function (dispatch) {
+    dispatch({ type: "LOADING" });
     return axios
       .get(`https://pokeapi.co/api/v2/pokemon/${payload}`)
       .then((obj) => dispatch({ type: ON_SEARCH, payload: obj.data }))
@@ -34,6 +35,7 @@ export function onSearch(payload) {
 export function getTeams() {
   return async function (dispatch) {
     let pokms = [];
+    dispatch({ type: "LOADING" });
     onAuthStateChanged(auth, async (userFirebase) => {
       try {
         const datosTeam = await getDocs(

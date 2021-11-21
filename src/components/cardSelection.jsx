@@ -1,15 +1,29 @@
 import React from "react";
 import { deletePokemonSelected } from "../redux/actions";
+import Swal from "sweetalert2";
 import { connect } from "react-redux";
 import { Card, ListGroup, ListGroupItem, Button, Badge } from "react-bootstrap";
 
 export function CardSelection(props) {
+  function deletePokemonSelected() {
+    props.deletePokemonSelected(props.id);
+    Swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Pokemon Retirado",
+      showConfirmButton: false,
+      timer: 600,
+    });
+  }
+  function capitalizarPrimeraLetra(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
   return (
     <div>
       <Card style={{ width: "10rem" }}>
         <Card.Img variant="top" src={props.img} />
         <Card.Body>
-          <Card.Title>{props.name}</Card.Title>
+          <Card.Title>{capitalizarPrimeraLetra(props.name)}</Card.Title>
         </Card.Body>
         <ListGroup className="list-group-flush">
           <ListGroupItem>ID: {props.id}</ListGroupItem>
@@ -23,7 +37,7 @@ export function CardSelection(props) {
           <Button
             variant="outline-danger"
             size="sm"
-            onClick={() => props.deletePokemonSelected(props.id)}
+            onClick={deletePokemonSelected}
           >
             X
           </Button>

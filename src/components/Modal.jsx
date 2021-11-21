@@ -3,6 +3,7 @@ import SearchBar from "./searchBar";
 import CardSearch from "../components/cardSearch";
 import { connect } from "react-redux";
 import { Modal, Button } from "react-bootstrap";
+import LoadingComponent from "./Loading";
 
 function ModalComponent(props) {
   const [show, setShow] = useState(false);
@@ -29,7 +30,9 @@ function ModalComponent(props) {
           <SearchBar />
           <div>
             <h5 className="mt-3">Pokemon Buscado:</h5>
-            {props.pokemon ? (
+            {props.loading ? (
+              <LoadingComponent />
+            ) : props.pokemon ? (
               <CardSearch
                 key={props.pokemon.id}
                 createTeamCollection={props.createTeamCollection}
@@ -45,6 +48,7 @@ function ModalComponent(props) {
 function mapStateToProps(state) {
   return {
     pokemon: state.pokemonInfo,
+    loading: state.loading,
   };
 }
 
