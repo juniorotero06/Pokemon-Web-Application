@@ -48,7 +48,7 @@ function ListGroupComponent(props) {
       props.pokemonSelected(props.id);
     } else {
       Swal.fire({
-        icon: "error",
+        icon: "info",
         title: "Ooops...",
         text: "Este pokemon ya ha sido seleccionado",
       });

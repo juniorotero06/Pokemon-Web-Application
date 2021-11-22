@@ -54,3 +54,15 @@
     width: 50%;
   }
 }
+
+.background-home {
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.78),
+      rgba(255, 255, 255, 0.78)
+    ),
+    url("https://i.pinimg.com/originals/16/de/e0/16dee095aede50fcbfd9dc9e72d2ebc0.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}

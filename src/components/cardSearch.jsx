@@ -15,38 +15,36 @@ export function CardSearch(props) {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
   return (
-    <div className="conteiner row justify-content-md-center">
+    <div className="row justify-content-center">
       <Card style={{ width: "10rem" }}>
         <Card.Img variant="top" src={props.pokemon?.img} />
-        <Card.Body>
+        <Card.Body className="text-center">
           <Card.Title>
             {capitalizarPrimeraLetra(props.pokemon?.name)}
           </Card.Title>
         </Card.Body>
         <ListGroup className="list-group-flush">
-          <ListGroupItem>ID: {props.pokemon?.id}</ListGroupItem>
-          <ListGroupItem>
+          <ListGroupItem className="text-center">
+            ID: {props.pokemon?.id}
+          </ListGroupItem>
+          <ListGroupItem className="text-center">
             <Badge pill bg="info">
               Types: {props.pokemon?.types.map((type) => type.type.name + " ")}
             </Badge>
           </ListGroupItem>
         </ListGroup>
-        <Card.Body>
-          <div>
-            <OverlayTrigger
-              overlay={
-                <Tooltip id="tooltip-disabled">Añadir al Equipo</Tooltip>
-              }
+        <Card.Body className="text-center">
+          <OverlayTrigger
+            overlay={<Tooltip id="tooltip-disabled">Añadir al Equipo</Tooltip>}
+          >
+            <Button
+              variant="success"
+              size="sm"
+              onClick={props.createTeamCollection}
             >
-              <Button
-                variant="success"
-                size="sm"
-                onClick={props.createTeamCollection}
-              >
-                ✓
-              </Button>
-            </OverlayTrigger>
-          </div>
+              ✓
+            </Button>
+          </OverlayTrigger>
         </Card.Body>
       </Card>
     </div>

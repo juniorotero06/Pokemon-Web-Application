@@ -21,27 +21,25 @@ export function CardSelection(props) {
   return (
     <div className="col-4 text-start my-3">
       <Card style={{ width: "10rem" }}>
-        <Card.Img variant="top" src={props.img} />
-        <Card.Body>
+        <Card.Body className="text-end p-0">
+          <Button variant="danger" size="sm" onClick={deletePokemonSelected}>
+            X
+          </Button>
+        </Card.Body>
+        <Card.Img className="p-0" variant="top" src={props.img} />
+        <Card.Body className="text-center p-0">
           <Card.Title>{capitalizarPrimeraLetra(props.name)}</Card.Title>
         </Card.Body>
         <ListGroup className="list-group-flush">
-          <ListGroupItem>ID: {props.id}</ListGroupItem>
-          <ListGroupItem>
+          <ListGroupItem className="text-center p-0">
+            ID: {props.id}
+          </ListGroupItem>
+          <ListGroupItem className="text-center p-2">
             <Badge pill bg="info">
               Types: {props.types.map((type) => type.type.name + " ")}
             </Badge>
           </ListGroupItem>
         </ListGroup>
-        <Card.Body>
-          <Button
-            variant="outline-danger"
-            size="sm"
-            onClick={deletePokemonSelected}
-          >
-            X
-          </Button>
-        </Card.Body>
       </Card>
     </div>
   );

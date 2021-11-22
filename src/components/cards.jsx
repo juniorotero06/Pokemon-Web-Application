@@ -6,7 +6,7 @@ import ListGroupComponent from "./ListGroupComponent.jsx";
 export function Cards(props) {
   return (
     <div className="row justify-content-start mb-3 px-md-5">
-      <div className="col-12 text-start my-3">
+      <div className="col-12 text-center my-3">
         <span className="h1">Team:</span>
       </div>
       {props.teams?.map((p) => (

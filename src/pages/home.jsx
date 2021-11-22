@@ -9,6 +9,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { getTeams, clearSearchCard } from "../redux/actions";
 import Swal from "sweetalert2";
 import { connect } from "react-redux";
+import "../App.css";
 
 export function Home(props) {
   const user = auth.currentUser;
@@ -59,7 +60,7 @@ export function Home(props) {
   }, []);
 
   return (
-    <div>
+    <div className="background-home">
       <div>
         <NavBar />
       </div>
