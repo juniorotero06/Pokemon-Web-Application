@@ -6,7 +6,7 @@ import ModalComponent from "../components/Modal";
 import LoadingComponent from "../components/Loading";
 import { db, auth } from "../firebase/firebaseConfig";
 import { collection, addDoc } from "firebase/firestore";
-import { getTeams, clearSearchCard } from "../redux/actions";
+import { getTeams, clearSearchCard, pokemonSelected } from "../redux/actions";
 import Swal from "sweetalert2";
 import { connect } from "react-redux";
 import "../App.css";
@@ -26,6 +26,7 @@ export function Home(props) {
             id: props.pokemon.id,
             img: props.pokemon.img,
             types: props.pokemon.types,
+            selected: false,
           });
           Swal.fire({
             position: "top-end",
@@ -36,9 +37,7 @@ export function Home(props) {
           });
           props.clearSearchCard();
           props.getTeams();
-        } catch (error) {
-          console.log("ya no hay usuario loggeado: ", error);
-        }
+        } catch (error) {}
       } else {
         Swal.fire({
           icon: "error",
@@ -56,6 +55,7 @@ export function Home(props) {
   }
   React.useEffect(() => {
     props.getTeams();
+    props.pokemonSelect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -81,18 +81,22 @@ export function Home(props) {
               <span className="h1">Pokemon Seleccionado</span>
             </div>
             <div className="row mb-3 px-md-5">
-              {props.pushArray
-                ? props.pushArray.map((p) => (
-                    <CardSelection
-                      key={p.id}
-                      name={p.name}
-                      types={p.types}
-                      img={p.img}
-                      id={p.id}
-                      documentId={p.documentId}
-                    />
-                  ))
-                : null}
+              {props.loading ? (
+                <div className="mt-3">
+                  <LoadingComponent />
+                </div>
+              ) : props.pokemonSelected ? (
+                props.pokemonSelected.map((p) => (
+                  <CardSelection
+                    key={p.id}
+                    name={p.name}
+                    types={p.types}
+                    img={p.img}
+                    id={p.id}
+                    documentId={p.documentId}
+                  />
+                ))
+              ) : null}
             </div>
           </div>
         </div>
@@ -105,7 +109,7 @@ function mapStateToProps(state) {
   return {
     pokemon: state.pokemonInfo,
     teams: state.pokemonTeam,
-    pushArray: state.pushArray,
+    pokemonSelected: state.pokemonSelected,
     loading: state.loading,
   };
 }
@@ -114,6 +118,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getTeams: () => dispatch(getTeams()),
     clearSearchCard: () => dispatch(clearSearchCard()),
+    pokemonSelect: () => dispatch(pokemonSelected()),
   };
 }
 

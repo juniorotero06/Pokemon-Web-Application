@@ -1,6 +1,6 @@
 import React from "react";
 import { db, auth } from "../firebase/firebaseConfig";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { deletePokemon, pokemonSelected } from "../redux/actions";
 import { connect } from "react-redux";
 import Swal from "sweetalert2";
@@ -35,17 +35,18 @@ function ListGroupComponent(props) {
           );
         }
       });
-    } catch (error) {
-      console.log("ya no hay usuario loggeado: ", error);
-    }
+    } catch (error) {}
   };
   const pokemonExist = (pokemon) => {
     let exist = props.pushArray.findIndex((push) => push.id === pokemon);
     return exist === -1 ? false : true;
   };
-  const SelectPokemon = () => {
+  const SelectPokemon = async () => {
     if (!pokemonExist(props.id)) {
-      props.pokemonSelected(props.id);
+      await updateDoc(doc(db, "users", user.uid, "team", props.documentId), {
+        selected: true,
+      });
+      props.pokemonSelected();
     } else {
       Swal.fire({
         icon: "info",
@@ -120,7 +121,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     deletePokemon: (id) => dispatch(deletePokemon(id)),
-    pokemonSelected: (idP) => dispatch(pokemonSelected(idP)),
+    pokemonSelected: () => dispatch(pokemonSelected()),
   };
 }
 

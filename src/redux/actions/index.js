@@ -8,7 +8,6 @@ const ON_SEARCH = "ON_SEARCH";
 const GET_TEAMS = "GET_TEAMS";
 const DELETE_POKEMON = "DELETE_POKEMON";
 const POKEMON_SELECTED = "POKEMON_SELECTED";
-const PUSH_ARRAY = "PUSH_ARRAY";
 const DELETE_POKEMON_SELECTED = "DELETE_POKEMON_SELECTED";
 const AUTHENTICATED = "AUTHENTICATED";
 const SING_OUT = "SING_OUT";
@@ -63,9 +62,7 @@ export function getTeams() {
           pokms.push(documentWithId);
         }
         dispatch({ type: GET_TEAMS, payload: pokms });
-      } catch (error) {
-        console.log("ya no hay usuario loggeado: ", error);
-      }
+      } catch (error) {}
     });
   };
 }
@@ -83,10 +80,32 @@ export function deletePokemon(id) {
   };
 }
 
-export function pokemonSelected(id) {
-  return function (dispatch) {
-    dispatch({ type: POKEMON_SELECTED, payload: id });
-    dispatch({ type: PUSH_ARRAY });
+export function pokemonSelected() {
+  return async function (dispatch) {
+    let pokms = [];
+    let pokemonSelect = [];
+    dispatch({ type: "LOADING" });
+    onAuthStateChanged(auth, async (userFirebase) => {
+      try {
+        const datosTeam = await getDocs(
+          collection(db, "users", userFirebase.uid, "team")
+        );
+        for (let team of datosTeam.docs) {
+          let documentWithId = team.data();
+          documentWithId = Object.assign(
+            {
+              documentId: team.id,
+            },
+            documentWithId
+          );
+          pokms.push(documentWithId);
+        }
+        pokemonSelect = pokms.filter((pokemon) => pokemon.selected === true);
+        dispatch({ type: POKEMON_SELECTED, payload: pokemonSelect });
+      } catch (error) {
+        console.log("ya no hay usuario loggeado: ", error);
+      }
+    });
   };
 }
 
@@ -118,7 +137,6 @@ export {
   GET_TEAMS,
   DELETE_POKEMON,
   POKEMON_SELECTED,
-  PUSH_ARRAY,
   DELETE_POKEMON_SELECTED,
   AUTHENTICATED,
   SING_OUT,

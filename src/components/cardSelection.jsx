@@ -1,11 +1,17 @@
 import React from "react";
 import { deletePokemonSelected } from "../redux/actions";
+import { db, auth } from "../firebase/firebaseConfig";
+import { doc, updateDoc } from "firebase/firestore";
 import Swal from "sweetalert2";
 import { connect } from "react-redux";
 import { Card, ListGroup, ListGroupItem, Button, Badge } from "react-bootstrap";
 
 export function CardSelection(props) {
-  function deletePokemonSelected() {
+  const user = auth.currentUser;
+  async function deletePokemonSelected() {
+    await updateDoc(doc(db, "users", user.uid, "team", props.documentId), {
+      selected: false,
+    });
     props.deletePokemonSelected(props.id);
     Swal.fire({
       position: "top-end",

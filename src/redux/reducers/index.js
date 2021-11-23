@@ -3,7 +3,6 @@ import {
   GET_TEAMS,
   DELETE_POKEMON,
   POKEMON_SELECTED,
-  PUSH_ARRAY,
   DELETE_POKEMON_SELECTED,
   AUTHENTICATED,
   SING_OUT,
@@ -13,8 +12,7 @@ import {
 const initialState = {
   pokemonInfo: null,
   pokemonTeam: [],
-  pokemonSelected: null,
-  pushArray: [],
+  pokemonSelected: [],
   authenticated: false,
   loading: false,
 };
@@ -50,21 +48,14 @@ function rootReducer(state = initialState, action) {
   if (action.type === POKEMON_SELECTED) {
     return {
       ...state,
-      pokemonSelected: state.pokemonTeam.filter(
-        (pokemon) => pokemon.id === action.payload
-      ),
-    };
-  }
-  if (action.type === PUSH_ARRAY) {
-    return {
-      ...state,
-      pushArray: state.pushArray.concat(state.pokemonSelected),
+      loading: false,
+      pokemonSelected: action.payload,
     };
   }
   if (action.type === DELETE_POKEMON_SELECTED) {
     return {
       ...state,
-      pushArray: state.pushArray.filter(
+      pokemonSelected: state.pokemonSelected.filter(
         (pokemon) => pokemon.id !== action.payload
       ),
     };

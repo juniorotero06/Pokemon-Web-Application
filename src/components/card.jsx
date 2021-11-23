@@ -11,9 +11,7 @@ export function CardComponent(props) {
     try {
       await deleteDoc(doc(db, "users", user.uid, "team", props.documentId));
       props.deletePokemon(props.id);
-    } catch (error) {
-      console.log("ya no hay usuario loggeado: ", error);
-    }
+    } catch (error) {}
   };
   const pokemonExist = (pokemon) => {
     let exist = props.pushArray.findIndex((push) => push.id === pokemon);

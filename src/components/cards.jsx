@@ -10,14 +10,16 @@ export function Cards(props) {
         <span className="h1">Team:</span>
       </div>
       {props.teams?.map((p) => (
-        <ListGroupComponent
-          key={p.id}
-          name={p.name}
-          types={p.types}
-          img={p.img}
-          id={p.id}
-          documentId={p.documentId}
-        />
+        <div key={p.id}>
+          <ListGroupComponent
+            name={p.name}
+            types={p.types}
+            img={p.img}
+            id={p.id}
+            selected={p.selected}
+            documentId={p.documentId}
+          />
+        </div>
       ))}
     </div>
   );
