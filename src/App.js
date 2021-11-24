@@ -13,9 +13,9 @@ function App() {
   return (
     <div className="App">
       <Switch>
-        <RouteLogin path="/login" component={Login} />
         <RouteRegister path="/register" component={Register} />
-        <PrivateRoute path="/" component={Home} />
+        <PrivateRoute path="/home" component={Home} />
+        <RouteLogin path="/" component={Login} />
       </Switch>
     </div>
   );

@@ -11,7 +11,7 @@ export function SearchBar(props) {
         className="d-flex"
         onSubmit={(e) => {
           e.preventDefault();
-          props.onSearch(pokemon);
+          props.onSearch(pokemon.toLowerCase());
         }}
       >
         <FormControl
@@ -22,12 +22,22 @@ export function SearchBar(props) {
           value={pokemon}
           onChange={(e) => setPokemon(e.target.value)}
         />
-        <Button variant="outline-success" type="submit">
+        <Button
+          disabled={props.loading === true}
+          variant="outline-success"
+          type="submit"
+        >
           Search
         </Button>
       </Form>
     </div>
   );
+}
+
+function mapStateToProps(state) {
+  return {
+    loading: state.loading,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -36,4 +46,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(null, mapDispatchToProps)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

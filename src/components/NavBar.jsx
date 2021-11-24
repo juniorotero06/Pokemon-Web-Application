@@ -11,7 +11,7 @@ function NavBar(props) {
   const cerrarSesion = () => {
     signOut(auth);
     props.singOut();
-    history.push("/login");
+    history.push("/");
   };
   return (
     <div>

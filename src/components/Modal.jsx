@@ -17,7 +17,11 @@ function ModalComponent(props) {
 
   return (
     <>
-      <Button variant="success" onClick={handleShow}>
+      <Button
+        disabled={props.loading === true}
+        variant="success"
+        onClick={handleShow}
+      >
         Añadir Pokemon
       </Button>
 

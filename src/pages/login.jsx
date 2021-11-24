@@ -39,7 +39,7 @@ function Login(props) {
     const user = e.target.idUsername.value;
     const password = e.target.idPassword.value;
     iniciarSesion(user, password);
-    history.push("/");
+    history.push("/home");
   };
 
   return (

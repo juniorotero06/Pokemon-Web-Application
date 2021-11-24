@@ -28,7 +28,12 @@ export function CardSelection(props) {
     <div className="col-4 text-start my-3">
       <Card style={{ width: "10rem" }}>
         <Card.Body className="text-end p-0">
-          <Button variant="danger" size="sm" onClick={deletePokemonSelected}>
+          <Button
+            disabled={props.loading === true}
+            variant="danger"
+            size="sm"
+            onClick={deletePokemonSelected}
+          >
             X
           </Button>
         </Card.Body>
@@ -51,10 +56,16 @@ export function CardSelection(props) {
   );
 }
 
+function mapStateToProps(state) {
+  return {
+    loading: state.loading,
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return {
     deletePokemonSelected: (id) => dispatch(deletePokemonSelected(id)),
   };
 }
 
-export default connect(null, mapDispatchToProps)(CardSelection);
+export default connect(mapStateToProps, mapDispatchToProps)(CardSelection);

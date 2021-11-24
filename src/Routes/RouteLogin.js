@@ -8,7 +8,7 @@ const RouteLogin = ({ component: Component, authenticated, ...rest }) => {
       {...rest}
       render={(props) => {
         if (!authenticated) return <Component {...props} />;
-        if (authenticated) return <Redirect to="/" />;
+        if (authenticated) return <Redirect to="/home" />;
       }}
     />
   );

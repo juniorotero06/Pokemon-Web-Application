@@ -50,7 +50,7 @@ export function Register(props) {
     const password = e.target.idPassword.value;
     console.log(user, password);
     crearUsuario(user, password);
-    history.push("/");
+    history.push("/home");
   };
 
   return (

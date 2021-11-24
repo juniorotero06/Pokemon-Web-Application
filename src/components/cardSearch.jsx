@@ -38,6 +38,7 @@ export function CardSearch(props) {
             overlay={<Tooltip id="tooltip-disabled">Añadir al Equipo</Tooltip>}
           >
             <Button
+              disabled={props.loading === true}
               variant="success"
               size="sm"
               onClick={props.createTeamCollection}
@@ -54,6 +55,7 @@ export function CardSearch(props) {
 function mapStateToProps(state) {
   return {
     pokemon: state.pokemonInfo,
+    loading: state.loading,
   };
 }
 

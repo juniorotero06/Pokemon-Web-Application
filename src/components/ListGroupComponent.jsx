@@ -87,6 +87,7 @@ function ListGroupComponent(props) {
                 }
               >
                 <Button
+                  disabled={props.loading === true}
                   className="mb-2"
                   variant="danger"
                   size="sm"
@@ -100,7 +101,12 @@ function ListGroupComponent(props) {
                   <Tooltip id="tooltip-disabled">Seleccionar Pokemon</Tooltip>
                 }
               >
-                <Button variant="success" size="sm" onClick={SelectPokemon}>
+                <Button
+                  disabled={props.loading === true}
+                  variant="success"
+                  size="sm"
+                  onClick={SelectPokemon}
+                >
                   ✓
                 </Button>
               </OverlayTrigger>
@@ -115,6 +121,7 @@ function ListGroupComponent(props) {
 function mapStateToProps(state) {
   return {
     pokemonSelect: state.pokemonSelected,
+    loading: state.loading,
   };
 }
 
