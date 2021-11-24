@@ -31,7 +31,6 @@ export function Register(props) {
       .then(async (userCredential) => {
         // Signed in
         const user = userCredential.user;
-        console.log("usuario creado: ", userCredential);
         //crear base de datos
         await setDoc(doc(db, "users", user.uid), {
           email: user.email,

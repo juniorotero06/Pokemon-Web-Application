@@ -27,12 +27,7 @@ function Login(props) {
 
   const iniciarSesion = (user, password) => {
     signInWithEmailAndPassword(auth, user, password)
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log("Sesion iniciada con: ", user);
-        props.isAuthenticated();
-      })
+      .then(props.isAuthenticated())
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;

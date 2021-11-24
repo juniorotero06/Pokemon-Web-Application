@@ -60,47 +60,49 @@ export function Home(props) {
   }, []);
 
   return (
-    <div className="background-home">
-      <div>
-        <NavBar />
-      </div>
-      <div className="container-fluid mt-3">
-        <div className="row justify-content-md-start">
-          <div className="col-12 col-md-6">
-            <ModalComponent createTeamCollection={createTeamCollection} />
-            {props.loading ? (
-              <div className="mt-3">
-                <LoadingComponent />
-              </div>
-            ) : props.teams ? (
-              <Cards />
-            ) : null}
-          </div>
-          <div className="col-12 col-md-6 mb-5 mt-3 mt-md-0">
-            <div>
-              <span className="h1">Pokemon Seleccionado</span>
-            </div>
-            <div className="row mb-3 px-md-5">
+    <div>
+      <header className="background-home">
+        <div>
+          <NavBar />
+        </div>
+        <div className="container-fluid mt-3">
+          <div className="row justify-content-md-start">
+            <div className="col-12 col-md-6">
+              <ModalComponent createTeamCollection={createTeamCollection} />
               {props.loading ? (
                 <div className="mt-3">
                   <LoadingComponent />
                 </div>
-              ) : props.pokemonSelected ? (
-                props.pokemonSelected.map((p) => (
-                  <CardSelection
-                    key={p.id}
-                    name={p.name}
-                    types={p.types}
-                    img={p.img}
-                    id={p.id}
-                    documentId={p.documentId}
-                  />
-                ))
+              ) : props.teams ? (
+                <Cards />
               ) : null}
+            </div>
+            <div className="col-12 col-md-6 mb-5 mt-3 mt-md-0">
+              <div>
+                <span className="h1">Pokemon Seleccionado</span>
+              </div>
+              <div className="row mb-3 px-md-5">
+                {props.loading ? (
+                  <div className="mt-3">
+                    <LoadingComponent />
+                  </div>
+                ) : props.pokemonSelected ? (
+                  props.pokemonSelected.map((p) => (
+                    <CardSelection
+                      key={p.id}
+                      name={p.name}
+                      types={p.types}
+                      img={p.img}
+                      id={p.id}
+                      documentId={p.documentId}
+                    />
+                  ))
+                ) : null}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </header>
     </div>
   );
 }

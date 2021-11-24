@@ -102,9 +102,7 @@ export function pokemonSelected() {
         }
         pokemonSelect = pokms.filter((pokemon) => pokemon.selected === true);
         dispatch({ type: POKEMON_SELECTED, payload: pokemonSelect });
-      } catch (error) {
-        console.log("ya no hay usuario loggeado: ", error);
-      }
+      } catch (error) {}
     });
   };
 }
