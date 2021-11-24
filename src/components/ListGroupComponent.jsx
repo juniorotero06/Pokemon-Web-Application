@@ -38,7 +38,7 @@ function ListGroupComponent(props) {
     } catch (error) {}
   };
   const pokemonExist = (pokemon) => {
-    let exist = props.pushArray.findIndex((push) => push.id === pokemon);
+    let exist = props.pokemonSelect.findIndex((push) => push.id === pokemon);
     return exist === -1 ? false : true;
   };
   const SelectPokemon = async () => {
@@ -114,7 +114,7 @@ function ListGroupComponent(props) {
 
 function mapStateToProps(state) {
   return {
-    pushArray: state.pushArray,
+    pokemonSelect: state.pokemonSelected,
   };
 }
 
